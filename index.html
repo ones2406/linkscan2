@@ -318,7 +318,7 @@
             commentList.innerHTML = '<li style="color:red;">Không thể tải bình luận.</li>';
         }
     }
-<!-- Firebase SDKs -->
+<!-- Firebase SDKs (chỉ cần dán thế này, KHÔNG dùng import) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
@@ -338,27 +338,26 @@
   // Khởi tạo Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
-  const db = firebase.firestore();
 
-  // Hàm đăng nhập Google
-  function signInWithGoogle(){
+  // Đăng nhập bằng Google
+  function loginGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider)
-      .then((result) => {
+      .then(result => {
         const user = result.user;
         console.log("Đăng nhập thành công:", user.displayName);
-        alert("Chào " + user.displayName);
-        // sau khi đăng nhập, bạn có thể hiển thị form bình luận...
+        alert("Xin chào, " + user.displayName);
       })
-      .catch((error) => {
-        console.error("Lỗi đăng nhập:", error);
+      .catch(error => {
+        console.error("Lỗi đăng nhập:", error.message);
         alert("Đăng nhập thất bại: " + error.message);
       });
   }
 
-  // Gắn hàm vào nút nếu bạn có dùng nút như <button id="loginBtn">Đăng nhập</button>
-  document.getElementById("loginBtn")?.addEventListener("click", signInWithGoogle);
+  // Gắn sự kiện vào nút (nếu có)
+  document.getElementById("loginBtn")?.addEventListener("click", loginGoogle);
 </script>
+
 
     // 7. Theo dõi trạng thái đăng nhập
     onAuthStateChanged(auth, (user) => {

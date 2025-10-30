@@ -1,152 +1,343 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Lê Văn Linh (Cypher) — Profile</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="shortcut icon" href="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pd93vMoULecQ7kNvwFdY8hT&_nc_oc=AdlmlfmUx7ViYSuDyxfqFGQUUUyJovbCmUNXXF2LR0QjQhUKTA2PxEmvE5uQrrytJtw&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=XvYrDtqwNKIW7GSz0d8aCQ&oh=00_AffwcSnQZPTnX1284lJjcB2vJ6xZVeQhUXfZrBOpZ4pxXw&oe=6906B1FF">
-<style>
-  /* --- giữ nguyên toàn bộ style của bạn --- */
-  :root{
-    --glass-bg: rgba(255,255,255,0.04);
-    --card-bg: rgba(8,10,14,0.75);
-    --accent: #00c4ff;
-    --accent-2: #7c4dff;
-    --text: #e9f1fb;
-    --muted: #bfcbd8;
-    --success: #4be27a;
-    --toast-bg: rgba(0,0,0,0.75);
-    --neon-strong: rgba(0,196,255,0.45);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{font-family:'Poppins',sans-serif;background: linear-gradient(270deg,#0f0c1a,#081024);color:var(--text);overflow-y:auto;}
-  .rgb-layer{position:fixed;inset:0;z-index:0;background:linear-gradient(270deg,rgba(124,77,255,0.4),rgba(0,196,255,0.4),rgba(0,255,170,0.35),rgba(255,85,150,0.35));background-size:900% 900%;filter:blur(28px);animation:rgbFlow 9s linear infinite;}
-  @keyframes rgbFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-  .dark-overlay{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(2,6,12,0.8))}
-  .wrap{position:relative;z-index:2;max-width:1000px;margin:36px auto;padding:24px}
-  header{display:flex;gap:20px;align-items:center;background:rgba(255,255,255,0.03);border-radius:14px;padding:28px;box-shadow:0 8px 36px rgba(2,6,12,0.7)}
-  .avatar{width:110px;height:110px;border-radius:50%;flex:0 0 110px;background-size:cover;background-position:center;box-shadow:0 0 25px rgba(0,196,255,0.3)}
-  .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:20px}
-  .card,.panel{background:rgba(255,255,255,0.03);border-radius:12px;padding:20px;box-shadow:0 6px 30px rgba(2,6,12,0.6)}
-  footer{text-align:center;color:var(--muted);font-size:0.9rem;padding:40px 0}
-  @media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}}
-</style>
-</head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lê Văn Linh (Cypher) — Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pd93vMoULecQ7kNvwFdY8hT&_nc_oc=AdlmlfmUx7ViYSuDyxfqFGQUUUyJovbCmUNXXF2LR0QjQhUKTA2PxEmvE5uQrrytJtw&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=XvYrDtqwNKIW7GSz0d8aCQ&oh=00_AffwcSnQZPTnX1284lJjcB2vJ6xZVeQhUXfZrBOpZ4pxXw&oe=6906B1FF">
 
-<body>
-<!-- 🔹 Khu vực đăng nhập và bình luận -->
-<div style="margin: 20px; text-align:center;">
-  <button id="loginBtn" style="padding:8px 16px;">Đăng nhập bằng Google</button>
-
-  <div id="comment-section" style="margin-top: 20px; display:none;">
-    <h3>Bình luận</h3>
-    <input type="text" id="commentInput" placeholder="Nhập bình luận..." style="width: 250px; padding:4px;">
-    <button id="sendComment">Gửi</button>
-
-    <h4 style="margin-top:15px;">Danh sách bình luận:</h4>
-    <ul id="commentList" style="list-style:none; padding:0; text-align:left; max-width:400px; margin:0 auto;"></ul>
-  </div>
-</div>
-
-<!-- Giao diện chính -->
-<div class="rgb-layer"></div>
-<div class="dark-overlay"></div>
-<div class="wrap">
-  <!-- phần profile, qr, link, vv... giữ nguyên -->
-  <!-- ... -->
-  <footer>© 2025 LÊ VĂN LINH — Thiết kế &amp; Hỗ trợ: Cypher</footer>
-</div>
-
-<div id="toast" class="toast"></div>
-
-<script>
-function copyText(text){
-  navigator.clipboard.writeText(text).then(()=>{
-    showToast('✅ Đã sao chép: ' + text);
-  });
-}
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2200);
-}
-</script>
-
-<!-- 🔥 Firebase + Bình luận -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, collection, addDoc, getDocs, serverTimestamp, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCbS8LxkK8_l6UT3hfcy_JXOs33bQrWb60",
-    authDomain: "cypherdex-21611.firebaseapp.com",
-    projectId: "cypherdex-21611",
-    storageBucket: "cypherdex-21611.appspot.com",
-    messagingSenderId: "108470103585",
-    appId: "1:108470103585:web:98b27f0513d2af55087d60"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  const db = getFirestore(app);
-
-  const loginBtn = document.getElementById("loginBtn");
-  const commentSection = document.getElementById("comment-section");
-  const sendBtn = document.getElementById("sendComment");
-  const commentInput = document.getElementById("commentInput");
-  const commentList = document.getElementById("commentList");
-
-  let currentUser = null;
-
-  // Đăng nhập Google
-  loginBtn.onclick = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      currentUser = result.user;
-      loginBtn.style.display = "none";
-      commentSection.style.display = "block";
-      showToast("✅ Xin chào " + currentUser.displayName);
-      loadComments();
-    } catch (err) {
-      alert("Lỗi đăng nhập: " + err.message);
+  <style>
+    /* CSS Variables */
+    :root{
+      --glass-bg: rgba(255,255,255,0.04);
+      --card-bg: rgba(8,10,14,0.75);
+      --accent: #00c4ff;
+      --accent-2: #7c4dff;
+      --text: #e9f1fb;
+      --muted: #bfcbd8;
+      --success: #4be27a;
+      --toast-bg: rgba(0,0,0,0.75);
+      --neon-strong: rgba(0,196,255,0.45);
     }
-  };
 
-  // Gửi bình luận
-  sendBtn.onclick = async () => {
-    if (!currentUser) return alert("Bạn cần đăng nhập trước!");
-    const text = commentInput.value.trim();
-    if (!text) return;
+    /* Base Styles */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(270deg,#0f0c1a,#081024);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      overflow-y:auto;
+    }
 
-    await addDoc(collection(db, "comments"), {
-      name: currentUser.displayName,
-      comment: text,
-      time: serverTimestamp()
+    /* RGB Background & Overlay */
+    .rgb-layer{
+      position:fixed;inset:0;z-index:0;
+      background: linear-gradient(270deg,
+        rgba(124,77,255,0.4),
+        rgba(0,196,255,0.4),
+        rgba(0,255,170,0.35),
+        rgba(255,85,150,0.35));
+      background-size:900% 900%;
+      filter:blur(28px) saturate(180%);
+      pointer-events:none;
+      animation: rgbFlow 9s linear infinite;
+      mix-blend-mode:screen;
+      opacity:1;
+    }
+    @keyframes rgbFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .dark-overlay{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(2,6,12,0.8));pointer-events:none;}
+
+    .wrap{position:relative;z-index:2;max-width:1000px;margin:36px auto;padding:24px}
+
+    /* HEADER */
+    header{display:flex;gap:20px;align-items:center;background:rgba(255,255,255,0.03);border-radius:14px;padding:28px;box-shadow:0 8px 36px rgba(2,6,12,0.7);backdrop-filter:blur(10px)}
+    .avatar{width:110px;height:110px;border-radius:50%;flex:0 0 110px;background-size:cover;background-position:center;box-shadow:0 0 25px rgba(0,196,255,0.3)}
+    header h1{font-size:1.6rem;color:var(--text);margin-bottom:6px}
+    header p{color:var(--muted);font-size:0.98rem}
+
+    /* GRID */
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:20px}
+    .card{background:var(--card-bg);border-radius:12px;padding:20px;box-shadow:0 6px 30px rgba(2,6,12,0.6)}
+    .card h2{color:var(--accent);margin-bottom:10px}
+    .lead{color:var(--muted);line-height:1.6;margin-bottom:14px}
+    .services{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .service-item{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;font-size:0.92rem;color:var(--muted);border:1px solid rgba(255,255,255,0.05);transition:.2s}
+    .service-item:hover{color:var(--text);transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,196,255,0.1);border-color:var(--neon-strong)}
+
+    /* QR + PANEL (Banking/Social) */
+    .panel{background:rgba(255,255,255,0.03);border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
+    .panel h3{color:var(--accent)}
+    .qr{width:190px;height:190px;border-radius:12px;border:3px solid rgba(255,255,255,0.05);box-shadow:0 0 40px rgba(0,196,255,0.25)}
+    .qr-wrap{position:relative}
+    .qr-wrap::after{content:"";position:absolute;inset:-12px;border-radius:16px;background:conic-gradient(from 0deg,rgba(0,196,255,0.4),rgba(124,77,255,0.35));filter:blur(16px);animation:spin 8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .bank-info{width:100%;margin-top:8px}
+    .bank-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin:6px 0;background:rgba(255,255,255,0.02);cursor:pointer;transition:.2s}
+    .bank-row:hover{background:rgba(0,196,255,0.08)}
+    .label{color:var(--muted);font-size:0.92rem}
+    .value{color:var(--text);font-weight:700}
+    .hint{font-size:0.82rem;color:var(--muted);margin-top:6px;text-align:center}
+
+    /* SOCIALS */
+    .links{display:flex;gap:10px;margin-top:12px}
+    .social{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);color:var(--text);text-decoration:none;transition:.2s;font-weight:600}
+    .social:hover{background:rgba(0,196,255,0.1);transform:translateY(-4px)}
+    .donate{margin-top:10px;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041225;font-weight:700;text-decoration:none;text-align:center;transition:.2s}
+    .donate:hover{filter:brightness(1.1);transform:translateY(-2px)}
+
+    /* WEBSITE cards */
+    .webs{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+    .web-card{flex:0 0 calc(50% - 12px);background:rgba(255,255,255,0.02);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;transition:.2s;border:1px solid rgba(255,255,255,0.05)}
+    .web-card:hover{transform:translateY(-6px);border-color:var(--neon-strong);box-shadow:0 0 20px rgba(0,196,255,0.08)}
+    .web-card img{width:40px;height:40px;border-radius:10px;box-shadow:0 0 12px rgba(0,196,255,0.3)}
+    .title{font-weight:700;color:var(--text)}
+    .desc{color:var(--muted);font-size:0.85rem}
+
+    /* TOAST */
+    .toast{position:fixed;right:20px;bottom:24px;padding:12px 16px;border-radius:10px;background:var(--toast-bg);color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;font-weight:700}
+    .toast.show{display:flex;animation:fade .3s ease both}
+    @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Footer & Media Queries */
+    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:40px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}.web-card{flex:0 0 100%}}
+  </style>
+</head>
+<body>
+
+  <div class="rgb-layer"></div>
+  <div class="dark-overlay"></div>
+
+  <div class="wrap">
+
+    <header>
+      <div class="avatar" style="background-image:url('https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/566314775_122191164164569142_2687502546569366099_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeHHpnez4qJNuy-J9CbZafte9Plgg3qj1C30-WCDeqPULVOSS1L-cnPZ5u-8qS9FMKxrwQ7PIgJqQdRms7_NRWYt&_nc_ohc=mAjTIhwsjDAQ7kNvwFRt6Z-&_nc_oc=Adnu4Y7mRU_Pfo7EPypGlS-eemeGi2olHZHV8r89vaNWmLF24Bs9TOeHKZIWARiZ7Q&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=TZng3P_VHtBFibWJjjKe1Q&oh=00_AfcezOtF8laG1TtQfzXKQiZ8R80tcDQYTQ9KuqfPtvlBzw&oe=6903D779');"></div>
+      <div class="meta">
+        <h1>Lê Văn Linh (Cypher)</h1>
+        <p>Admin website <a href="https://cypher234.shop" target="_blank" style="color:var(--accent);text-decoration:underline">Cypher234.shop</a></p>
+      </div>
+    </header>
+
+    <div class="grid">
+
+      <div class="card">
+        <h2>Giới thiệu bản thân</h2>
+        <p class="lead">Xin chào! Tôi là <strong>Lê Văn Linh</strong>, chuyên cung cấp các dịch vụ game và thiết kế web. Uy tín, an toàn và chất lượng là ưu tiên hàng đầu.</p>
+
+        <h2>Dịch vụ</h2>
+        <div class="services">
+          <span class="service-item">Tạo shop game siêu tốc giá rẻ</span>
+          <span class="service-item">Cung cấp dịch vụ trực tuyến điện tử giải trí</span>
+          <span class="service-item">Tư vấn thương hiệu cá nhân</span>
+          <span class="service-item">Tối ưu SEO & Marketing</span>
+          <span class="service-item">Cung cấp tài khoản ảo về game Liên Quân Mobile giải trí trực tuyến</span>
+        </div>
+
+        <h2 style="margin-top:18px">Thanh toán nhanh (VietQR)</h2>
+        <div class="panel">
+          <div class="qr-wrap"><img class="qr" src="https://img.vietqr.io/image/970407-19073015796012-compact.png?addInfo=LE%20VAN%20LINH"></div>
+
+          <div class="bank-info">
+            <div class="bank-row" onclick="copyText('Techcombank')"><div class="label">Ngân hàng</div><div class="value">Techcombank</div></div>
+            <div class="bank-row" onclick="copyText('19073015796012')"><div class="label">Số tài khoản</div><div class="value">19073015796012</div></div>
+            <div class="bank-row" onclick="copyText('LÊ VĂN LINH')"><div class="label">Chủ tài khoản</div><div class="value">LÊ VĂN LINH</div></div>
+            <div class="hint">Nhấn vào để sao chép thông tin.</div>
+          </div>
+
+          <div class="links">
+            <a class="social" href="https://zalo.me/0366241530" target="_blank">Zalo Chat</a>
+            <a class="social" href="https://www.facebook.com/onessz26/" target="_blank">Facebook</a>
+          </div>
+
+          <a class="donate" href="https://vietqr.co/api/generate/tcb/19073015796012/LE%20VAN%20LINH" target="_blank">Donate / Hỗ trợ</a>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3>🌐 Trang Web Của Tôi</h3>
+        <div class="webs">
+          <a class="web-card" href="https://cypher289.shop" target="_blank">
+            <img src="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF2sOtunuf9a7u3B6jvER3SRfIn8hnGV-ZF8ifyGcZX5uSK7Lr_oXh85e3bPFRWq_8QVqFnOjyn6Q7qL_0nZn5A&_nc_ohc=gD4eyfl0mSYQ7kNvwF_oWnX&_nc_oc=AdnSccq82EIzKfk64IltRXmFrsaxth3y-tgnl1I52xozy_xeARK-AIpy5vkBcGHPVeI&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=N0r4PeZ2w5ROSMJEth139g&oh=00_AffUgtIknGWR3KWxXL7PHbW4IUD8VJMXbcqerfHnXZGP0A&oe=69040EFF">
+            <div><div class="title">Cypher234.shop</div><div class="desc">Random 9 cá 100% ra 3s</div></div>
+          </a>
+        </div>
+        
+        <div style="width:100%; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+            <button id="loginBtn" style="padding: 10px 15px; background: var(--accent); color: #041225; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 15px;">Đăng nhập bằng Google</button>
+            
+            <div id="comment-section">
+                <h3 style="color:var(--text); margin-bottom: 10px;">Bình luận</h3>
+                <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                    <input type="text" id="commentInput" placeholder="Nhập bình luận..." style="flex-grow: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--muted); background: rgba(0,0,0,0.5); color: var(--text);">
+                    <button id="sendComment" style="padding: 10px 15px; background: var(--accent-2); color: var(--text); font-weight: 600; border: none; border-radius: 6px; cursor: pointer;">Gửi</button>
+                </div>
+
+                <h4 style="color:var(--muted); margin-bottom: 8px;">Danh sách bình luận:</h4>
+                <ul id="commentList" style="list-style-type: none; padding: 0;"></ul>
+            </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>© 2025 LÊ VĂN LINH — Thiết kế &amp; Hỗ trợ: Cypher</footer>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /**
+     * Sao chép văn bản vào clipboard và hiển thị toast.
+     * @param {string} text - Văn bản cần sao chép.
+     */
+    function copyText(text){
+      navigator.clipboard.writeText(text).then(()=>{
+        showToast('✅ Đã sao chép: ' + text);
+      }).catch(err => {
+        console.error('Không thể sao chép văn bản: ', err);
+        showToast('❌ Lỗi sao chép.');
+      });
+    }
+
+    /**
+     * Hiển thị thông báo Toast.
+     * @param {string} msg - Nội dung thông báo.
+     */
+    function showToast(msg){
+      const t=document.getElementById('toast');
+      t.textContent=msg;
+      t.classList.add('show');
+      clearTimeout(window._tt);
+      window._tt=setTimeout(()=>t.classList.remove('show'),2200);
+    }
+  </script>
+
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // 1. Cấu hình Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbS8LxkK8_l6UT3hfcy_JXOs33bQrWb60",
+      authDomain: "cypherdex-21611.firebaseapp.com",
+      projectId: "cypherdex-21611",
+      storageBucket: "cypherdex-21611.appspot.com",
+      messagingSenderId: "108470103585",
+      appId: "1:108470103585:web:98b27f0513d2af55087d60"
+    };
+
+    // 2. Khởi tạo Firebase Services
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    const db = getFirestore(app);
+    const commentsRef = collection(db, "comments"); // Giả định tên collection là "comments"
+
+    // 3. Elements DOM
+    const loginBtn = document.getElementById("loginBtn");
+    const commentInput = document.getElementById("commentInput");
+    const sendCommentBtn = document.getElementById("sendComment");
+    const commentList = document.getElementById("commentList");
+
+    let currentUser = null; // Biến lưu thông tin người dùng hiện tại
+
+    // 4. Hàm Đăng nhập
+    loginBtn.onclick = async () => {
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        alert("Đăng nhập thành công: " + user.displayName);
+      } catch (error) {
+        console.error("Lỗi đăng nhập:", error);
+        alert("Đăng nhập thất bại. Vui lòng thử lại.");
+      }
+    };
+
+    // 5. Hàm Gửi bình luận
+    sendCommentBtn.onclick = async () => {
+        if (!currentUser) {
+            alert("Vui lòng đăng nhập để bình luận.");
+            return;
+        }
+
+        const text = commentInput.value.trim();
+        if (text === "") {
+            alert("Bình luận không được để trống.");
+            return;
+        }
+
+        try {
+            await addDoc(commentsRef, {
+                username: currentUser.displayName || 'Người dùng ẩn danh',
+                photoURL: currentUser.photoURL || 'default-avatar.png',
+                comment: text,
+                timestamp: new Date()
+            });
+            commentInput.value = ''; // Xóa nội dung input
+            alert("Bình luận đã được gửi!");
+            loadComments(); // Tải lại danh sách bình luận
+        } catch (e) {
+            console.error("Lỗi khi thêm tài liệu: ", e);
+            alert("Lỗi khi gửi bình luận.");
+        }
+    };
+
+    // 6. Hàm Tải bình luận
+    async function loadComments() {
+        commentList.innerHTML = ''; // Xóa danh sách cũ
+        try {
+            // Sắp xếp theo timestamp giảm dần (mới nhất lên trên)
+            const q = query(commentsRef, orderBy("timestamp", "desc")); 
+            const querySnapshot = await getDocs(q);
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const li = document.createElement('li');
+                li.style.marginBottom = '10px';
+                li.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+                li.style.paddingBottom = '5px';
+                
+                li.innerHTML = `
+                    <div style="display:flex; align-items:center; gap: 8px;">
+                        <img src="${data.photoURL}" alt="Avatar" style="width: 24px; height: 24px; border-radius: 50%;">
+                        <strong style="color: var(--accent);">${data.username}:</strong> 
+                        <span style="color: var(--text);">${data.comment}</span>
+                    </div>
+                    <small style="color: var(--muted); display: block; text-align: right;">${data.timestamp.toDate().toLocaleTimeString('vi-VN')} ${data.timestamp.toDate().toLocaleDateString('vi-VN')}</small>
+                `;
+                commentList.appendChild(li);
+            });
+        } catch (e) {
+            console.error("Lỗi khi tải bình luận: ", e);
+            commentList.innerHTML = '<li style="color:red;">Không thể tải bình luận.</li>';
+        }
+    }
+
+    // 7. Theo dõi trạng thái đăng nhập
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            currentUser = user;
+            loginBtn.textContent = `Đã đăng nhập: ${user.displayName}`;
+            loginBtn.disabled = true;
+            // Cho phép người dùng bình luận
+            sendCommentBtn.disabled = false;
+            commentInput.disabled = false;
+        } else {
+            currentUser = null;
+            loginBtn.textContent = 'Đăng nhập bằng Google';
+            loginBtn.disabled = false;
+            // Vô hiệu hóa bình luận nếu chưa đăng nhập
+            sendCommentBtn.disabled = true;
+            commentInput.disabled = true;
+            commentInput.value = '';
+        }
+        loadComments(); // Tải bình luận khi trạng thái auth thay đổi
     });
-
-    commentInput.value = "";
-    loadComments();
-  };
-
-  // Tải bình luận
-  async function loadComments() {
-    commentList.innerHTML = "⏳ Đang tải...";
-    const q = query(collection(db, "comments"), orderBy("time", "desc"));
-    const snapshot = await getDocs(q);
-    commentList.innerHTML = "";
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const li = document.createElement("li");
-      li.style.margin = "6px 0";
-      li.innerHTML = `<strong>${data.name}:</strong> ${data.comment}`;
-      commentList.appendChild(li);
-    });
-  }
-</script>
+  </script>
 </body>
 </html>

@@ -216,169 +216,140 @@
     }
   </script>
 
+    <!-- ✅ Firebase chuẩn: Dán toàn bộ phần này vào cuối <body> -->
   <script type="module">
-    // Import Firebase SDK
+    // === Import Firebase (dạng module) ===
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { 
+      getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { 
+      getFirestore, collection, addDoc, getDocs, query, orderBy 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // 1. Cấu hình Firebase
+    // === 1. Cấu hình Firebase ===
     const firebaseConfig = {
-      apiKey: "AIzaSyCbS8LxkK8_l6UT3hfcy_JXOs33bQrWb60",
-      authDomain: "cypherdex-21611.firebaseapp.com",
-      projectId: "cypherdex-21611",
-      storageBucket: "cypherdex-21611.appspot.com",
+      apiKey: "AIzaSyCbS8LxKk8_l6UT3hfcy_JXOs33bQrWb60",
+      authDomain: "cypherdev-21611.firebaseapp.com",
+      projectId: "cypherdev-21611",
+      storageBucket: "cypherdev-21611.appspot.com",
       messagingSenderId: "108470103585",
-      appId: "1:108470103585:web:98b27f0513d2af55087d60"
+      appId: "1:108470103585:web:98b72f0513d2af55087d60",
+      measurementId: "G-CD1R2G24E2"
     };
 
-    // 2. Khởi tạo Firebase Services
+    // === 2. Khởi tạo Firebase ===
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
-    const commentsRef = collection(db, "comments"); // Giả định tên collection là "comments"
+    const commentsRef = collection(db, "comments");
 
-    // 3. Elements DOM
+    // === 3. Lấy các phần tử HTML ===
     const loginBtn = document.getElementById("loginBtn");
     const commentInput = document.getElementById("commentInput");
     const sendCommentBtn = document.getElementById("sendComment");
     const commentList = document.getElementById("commentList");
 
-    let currentUser = null; // Biến lưu thông tin người dùng hiện tại
+    let currentUser = null;
 
-    // 4. Hàm Đăng nhập
-    loginBtn.onclick = async () => {
+    // === 4. Xử lý đăng nhập Google ===
+    loginBtn.addEventListener("click", async () => {
       try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-        alert("Đăng nhập thành công: " + user.displayName);
+        showToast(`Xin chào, ${user.displayName}!`);
       } catch (error) {
         console.error("Lỗi đăng nhập:", error);
-        alert("Đăng nhập thất bại. Vui lòng thử lại.");
+        showToast("❌ Đăng nhập thất bại.");
       }
-    };
-
-    // 5. Hàm Gửi bình luận
-    sendCommentBtn.onclick = async () => {
-        if (!currentUser) {
-            alert("Vui lòng đăng nhập để bình luận.");
-            return;
-        }
-
-        const text = commentInput.value.trim();
-        if (text === "") {
-            alert("Bình luận không được để trống.");
-            return;
-        }
-
-        try {
-            await addDoc(commentsRef, {
-                username: currentUser.displayName || 'Người dùng ẩn danh',
-                photoURL: currentUser.photoURL || 'default-avatar.png',
-                comment: text,
-                timestamp: new Date()
-            });
-            commentInput.value = ''; // Xóa nội dung input
-            alert("Bình luận đã được gửi!");
-            loadComments(); // Tải lại danh sách bình luận
-        } catch (e) {
-            console.error("Lỗi khi thêm tài liệu: ", e);
-            alert("Lỗi khi gửi bình luận.");
-        }
-    };
-
-    // 6. Hàm Tải bình luận
-    async function loadComments() {
-        commentList.innerHTML = ''; // Xóa danh sách cũ
-        try {
-            // Sắp xếp theo timestamp giảm dần (mới nhất lên trên)
-            const q = query(commentsRef, orderBy("timestamp", "desc")); 
-            const querySnapshot = await getDocs(q);
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const li = document.createElement('li');
-                li.style.marginBottom = '10px';
-                li.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
-                li.style.paddingBottom = '5px';
-                
-                li.innerHTML = `
-                    <div style="display:flex; align-items:center; gap: 8px;">
-                        <img src="${data.photoURL}" alt="Avatar" style="width: 24px; height: 24px; border-radius: 50%;">
-                        <strong style="color: var(--accent);">${data.username}:</strong> 
-                        <span style="color: var(--text);">${data.comment}</span>
-                    </div>
-                    <small style="color: var(--muted); display: block; text-align: right;">${data.timestamp.toDate().toLocaleTimeString('vi-VN')} ${data.timestamp.toDate().toLocaleDateString('vi-VN')}</small>
-                `;
-                commentList.appendChild(li);
-            });
-        } catch (e) {
-            console.error("Lỗi khi tải bình luận: ", e);
-            commentList.innerHTML = '<li style="color:red;">Không thể tải bình luận.</li>';
-        }
-    }
-<!-- Firebase SDKs (chỉ cần dán thế này, KHÔNG dùng import) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
-
-<script>
-  // Cấu hình Firebase của bạn
-  const firebaseConfig = {
-    apiKey: "AIzaSyCbS8LxKk8_l6UT3hfcy_JXOs33bQrWb60",
-    authDomain: "cypherdev-21611.firebaseapp.com",
-    projectId: "cypherdev-21611",
-    storageBucket: "cypherdev-21611.appspot.com",
-    messagingSenderId: "108470103585",
-    appId: "1:108470103585:web:98b72f0513d2af55087d60",
-    measurementId: "G-CD1R2G24E2"
-  };
-
-  // Khởi tạo Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-
-  // Đăng nhập bằng Google
-  function loginGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then(result => {
-        const user = result.user;
-        console.log("Đăng nhập thành công:", user.displayName);
-        alert("Xin chào, " + user.displayName);
-      })
-      .catch(error => {
-        console.error("Lỗi đăng nhập:", error.message);
-        alert("Đăng nhập thất bại: " + error.message);
-      });
-  }
-
-  // Gắn sự kiện vào nút (nếu có)
-
-</script>
-
-
-    // 7. Theo dõi trạng thái đăng nhập
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            currentUser = user;
-            loginBtn.textContent = `Đã đăng nhập: ${user.displayName}`;
-            loginBtn.disabled = true;
-            // Cho phép người dùng bình luận
-            sendCommentBtn.disabled = false;
-            commentInput.disabled = false;
-        } else {
-            currentUser = null;
-            loginBtn.textContent = 'Đăng nhập bằng Google';
-            loginBtn.disabled = false;
-            // Vô hiệu hóa bình luận nếu chưa đăng nhập
-            sendCommentBtn.disabled = true;
-            commentInput.disabled = true;
-            commentInput.value = '';
-        }
-        loadComments(); // Tải bình luận khi trạng thái auth thay đổi
     });
+
+    // === 5. Theo dõi trạng thái đăng nhập ===
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        loginBtn.textContent = `Đã đăng nhập: ${user.displayName}`;
+        loginBtn.disabled = true;
+        sendCommentBtn.disabled = false;
+        commentInput.disabled = false;
+      } else {
+        currentUser = null;
+        loginBtn.textContent = "Đăng nhập bằng Google";
+        loginBtn.disabled = false;
+        sendCommentBtn.disabled = true;
+        commentInput.disabled = true;
+      }
+      loadComments();
+    });
+
+    // === 6. Gửi bình luận ===
+    sendCommentBtn.addEventListener("click", async () => {
+      if (!currentUser) {
+        showToast("⚠️ Vui lòng đăng nhập để bình luận.");
+        return;
+      }
+
+      const text = commentInput.value.trim();
+      if (!text) {
+        showToast("⚠️ Bình luận không được để trống.");
+        return;
+      }
+
+      try {
+        await addDoc(commentsRef, {
+          username: currentUser.displayName || "Ẩn danh",
+          photoURL: currentUser.photoURL || "",
+          comment: text,
+          timestamp: new Date()
+        });
+        commentInput.value = "";
+        showToast("✅ Bình luận đã được gửi!");
+        loadComments();
+      } catch (e) {
+        console.error("Lỗi gửi bình luận:", e);
+        showToast("❌ Gửi bình luận thất bại.");
+      }
+    });
+
+    // === 7. Tải danh sách bình luận ===
+    async function loadComments() {
+      commentList.innerHTML = "";
+      try {
+        const q = query(commentsRef, orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px;">
+              <img src="${data.photoURL}" style="width:24px;height:24px;border-radius:50%;">
+              <strong style="color:var(--accent)">${data.username}</strong> 
+              <span style="color:var(--text)">${data.comment}</span>
+            </div>
+            <small style="color:var(--muted);display:block;text-align:right;">
+              ${data.timestamp.toDate().toLocaleTimeString("vi-VN")} 
+              ${data.timestamp.toDate().toLocaleDateString("vi-VN")}
+            </small>`;
+          li.style.marginBottom = "10px";
+          li.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+          li.style.paddingBottom = "5px";
+          commentList.appendChild(li);
+        });
+      } catch (e) {
+        console.error("Lỗi khi tải bình luận:", e);
+        commentList.innerHTML = "<li style='color:red;'>Không thể tải bình luận.</li>";
+      }
+    }
+
+    // === 8. Hàm hiển thị thông báo ngắn (Toast) ===
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(window._tt);
+      window._tt = setTimeout(() => t.classList.remove("show"), 2200);
+    }
   </script>
 </body>
 </html>

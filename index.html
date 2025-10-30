@@ -297,45 +297,52 @@
     }
   });
 
-  // === 7. Gửi bình luận (mỗi tài khoản chỉ 1 lần) ===
-  sendCommentBtn.addEventListener("click", async () => {
-    if (!currentUser) {
-      showToast("⚠️ Vui lòng đăng nhập để bình luận.");
+ // === 7. Gửi bình luận (mỗi tài khoản chỉ 1 lần) ===
+sendCommentBtn.addEventListener("click", async () => {
+  if (!currentUser) {
+    showToast("⚠️ Vui lòng đăng nhập để bình luận.");
+    return;
+  }
+
+  const text = commentInput.value.trim();
+  if (!text) {
+    showToast("⚠️ Bình luận không được để trống.");
+    return;
+  }
+
+  sendCommentBtn.disabled = true;
+
+  try {
+    // Kiểm tra xem user đã bình luận chưa
+    const q = query(commentsRef, where("uid", "==", currentUser.uid));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      showToast("⚠️ Mỗi tài khoản chỉ được bình luận 1 lần.");
+      commentInput.disabled = true;
       return;
     }
 
-    const text = commentInput.value.trim();
-    if (!text) {
-      showToast("⚠️ Bình luận không được để trống.");
-      return;
-    }
+    await addDoc(commentsRef, {
+      uid: currentUser.uid,
+      username: currentUser.displayName || "Ẩn danh",
+      photoURL: currentUser.photoURL || "",
+      comment: text,
+      timestamp: new Date()
+    });
 
-    try {
-      // Kiểm tra xem user đã bình luận chưa
-      const q = query(commentsRef, where("uid", "==", currentUser.uid));
-      const snapshot = await getDocs(q);
+    commentInput.value = "";
+    commentInput.disabled = true;
+    showToast("✅ Bình luận đã được gửi!");
+    loadComments();
+  } catch (e) {
+    console.error("Lỗi gửi bình luận:", e);
+    showToast("❌ Gửi bình luận thất bại.");
+  } finally {
+    sendCommentBtn.disabled = true;
+  }
+});
 
-      if (!snapshot.empty) {
-        showToast("⚠️ Mỗi tài khoản chỉ được bình luận 1 lần.");
-        return;
-      }
-
-      await addDoc(commentsRef, {
-        uid: currentUser.uid,
-        username: currentUser.displayName || "Ẩn danh",
-        photoURL: currentUser.photoURL || "",
-        comment: text,
-        timestamp: new Date()
-      });
-
-      commentInput.value = "";
-      showToast("✅ Bình luận đã được gửi!");
-      loadComments();
-    } catch (e) {
-      console.error("Lỗi gửi bình luận:", e);
-      showToast("❌ Gửi bình luận thất bại.");
-    }
-  });
 
   // === 8. Tải bình luận ===
   async function loadComments() {

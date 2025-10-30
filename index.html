@@ -168,6 +168,42 @@
         
         <div style="width:100%; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
             <button id="loginBtn" style="padding: 10px 15px; background: var(--accent); color: #041225; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 15px;">Đăng nhập bằng Google</button>
+          <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCb3sLxKk8_l6UT3hfcy_JXOs33bQrWb60",
+    authDomain: "cypherdev-21611.firebaseapp.com",
+    projectId: "cypherdev-21611",
+    storageBucket: "cypherdev-21611.appspot.com",
+    messagingSenderId: "108470103585",
+    appId: "1:108470103585:web:98b72f0513d2af55087d60",
+    measurementId: "G-CD1R2G24E2"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // Example: Google Login
+  function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        console.log("Đăng nhập thành công:", result.user);
+        alert("Đăng nhập thành công, chào " + result.user.displayName);
+      })
+      .catch((error) => {
+        console.error("Lỗi đăng nhập:", error);
+        alert("Đăng nhập thất bại!");
+      });
+  }
+</script>
+
             
             <div id="comment-section">
                 <h3 style="color:var(--text); margin-bottom: 10px;">Bình luận</h3>

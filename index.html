@@ -103,7 +103,39 @@
   @media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}.web-card{flex:0 0 100%}}
 </style>
 </head>
+  <script type="module">
+  // Import Firebase SDK
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // 🔹 DÁN ĐOẠN NÀY Ở ĐÂY
+  const firebaseConfig = {
+    apiKey: "AIzaSyCbS8LxkK8_l6UT3hfcy_JXOs33bQrWb60",
+    authDomain: "cypherdex-21611.firebaseapp.com",
+    projectId: "cypherdex-21611",
+    storageBucket: "cypherdex-21611.appspot.com",
+    messagingSenderId: "108470103585",
+    appId: "1:108470103585:web:98b27f0513d2af55087d60"
+  };
+
+  // Khởi tạo Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
+
+  // Nút đăng nhập
+  const loginBtn = document.getElementById("loginBtn");
+  loginBtn.onclick = async () => {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    alert("Đăng nhập thành công: " + user.displayName);
+  };
+</script>
+
 <body>
+  
 <div class="rgb-layer"></div>
 <div class="dark-overlay"></div>
 

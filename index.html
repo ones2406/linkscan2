@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Lê Văn Linh (Cypher) — Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pd93vMoULecQ7kNvwFdY8hT&_nc_oc=AdlmlfmUx7ViYSuDyxfqFGQUUUyJovbCmUNXXF2LR0QjQjQhUKTA2PxEmvE5uQrrytJtw&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=XvYrDtqwNKIW7GSz0d8aCQ&oh=00_AffwcSnQZPTnX1284lJjcB2vJ6xZVeQhUXfZrBOpZ4pxXw&oe=6906B1FF">
+    <link rel="shortcut icon" href="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pd93vMoULecQ7kNvwFdY8hT&_nc_oc=AdlmlfmUx7ViYSuDyxfqFGQUUUyJovbCmUNXXF2LR0QjQjQhUKTA2PxEmvE5uQrrytJtw&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=XvYrDtqwNKIW7GSz0d8aCQ&oh=00_AffwcSnQZPTnX1284lJjcB2vJ6xZVeQhUXzZrBOpZ4pxXw&oe=6906B1FF">
 
     <style>
         /* CSS Variables */
@@ -272,10 +272,12 @@
 
         // === 9. Toast helper ===
         function showToast(msg) {
-            toastElement.textContent = msg;
-            toastElement.classList.add("show");
-            clearTimeout(window._tt);
-            window._tt = setTimeout(() => toastElement.classList.remove("show"), 2200);
+            // Sử dụng hàm showToast đã định nghĩa ở global scope
+            if (window.showToast) {
+                window.showToast(msg);
+            } else {
+                console.warn("Không tìm thấy global showToast function.");
+            }
         }
         
         // Hàm kiểm tra user đã bình luận chưa
@@ -326,12 +328,13 @@
                         timeDisplay = 'Đang cập nhật...'; 
                     }
                     
+                    // Thêm class 'comment-text' vào nội dung bình luận để khớp với CSS
                     li.innerHTML = `
                         <div class="comment-meta">
                             <img src="${data.photoURL || 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'}" alt="Avatar">
                             <strong>${data.username}</strong>
-                            <span class="comment-text">${data.comment}</span>
                         </div>
+                        <span class="comment-text">${data.comment}</span>
                         <small class="comment-time">${timeDisplay}</small>`;
 
                     commentList.appendChild(li);
@@ -456,7 +459,7 @@
 
     <script>
     (function(){
-        // ** FIX LỖI 404: ĐƯỜNG DẪN PROXY ĐƯỢC SỬA LẠI THEO VỊ TRÍ THỰC TẾ (/public/proxy.php) **
+        // ** ĐƯỜNG DẪN PROXY (Vẫn là 404 nếu file proxy.php không tồn tại trên server cypher234.shop) **
         const PROXY_URL = "https://cypher234.shop/public/proxy.php"; 
 
         const toggle = document.getElementById("cypher-toggle");
@@ -465,9 +468,9 @@
         const input = document.getElementById("cypher-text");
         const sendBtn = document.getElementById("cypher-send");
         
-        // FIX LỖI "TypeError: Cannot set properties of null (setting 'onclick')"
+        // FIX LỖI "TypeError: Cannot set properties of null..."
         if (!toggle || !panel || !msgBox || !input || !sendBtn) {
-            console.error("Lỗi khởi tạo Chatbot: Một số phần tử HTML không được tìm thấy.");
+            console.error("Lỗi khởi tạo Chatbot: Một số phần tử HTML không được tìm thấy. Bỏ qua logic Chatbot.");
             return; 
         }
 
@@ -527,11 +530,13 @@
                     body: JSON.stringify({ inputs: t })
                 });
 
+                // Xóa tin nhắn trạng thái "Đang xử lý..."
                 const statusNodes = Array.from(msgBox.querySelectorAll(".cy-msg.cy-bot")).filter(n => n.innerText.includes("Đang xử lý"));
                 statusNodes.forEach(n => n.parentElement.remove()); 
 
                 if (!res.ok) {
-                    throw new Error(`API returned HTTP status code ${res.status}`);
+                    // Cải thiện thông báo lỗi HTTP
+                    throw new Error(`API trả về Lỗi HTTP ${res.status}. Vui lòng kiểm tra file proxy.php.`);
                 }
 
                 const text = await res.text();
@@ -557,10 +562,12 @@
                 append(reply, "cy-bot");
                 
             } catch (err) {
+                // Xóa tin nhắn trạng thái "Đang xử lý..." lần nữa
                 const statusNodes = Array.from(msgBox.querySelectorAll(".cy-msg.cy-bot")).filter(n => n.innerText.includes("Đang xử lý"));
                 statusNodes.forEach(n => n.parentElement.remove()); 
 
-                append(`⚠️ Lỗi kết nối server: ${err.message}. Vui lòng thử lại sau.`, "cy-bot");
+                // Hiển thị lỗi ra giao diện
+                append(`⚠️ Lỗi kết nối server: ${err.message}.`, "cy-bot");
                 console.error("Chat proxy error:", err);
             } finally {
                 isWaiting = false;

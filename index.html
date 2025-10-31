@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pd93vMoULecQ7kNvwFdY8hT&_nc_oc=AdlmlfmUx7ViYSuDyxfqFGQUUUyJovbCmUNXXF2LR0QjQjQhUKTA2PxEmvE5uQrrytJtw&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=XvYrDtqwNKIW7GSz0d8aCQ&oh=00_AffwcSnQZPTnX1284lJjcB2vJ6xZVeQhUXfZrBOpZ4pxXw&oe=6906B1FF">
 
     <style>
-        /* ... (Phần CSS đã được kiểm tra, giữ nguyên để đảm bảo giao diện) ... */
+        /* CSS Variables */
         :root{
             --glass-bg: rgba(255,255,255,0.04);
             --card-bg: rgba(8,10,14,0.75);
@@ -20,6 +20,8 @@
             --toast-bg: rgba(0,0,0,0.75);
             --neon-strong: rgba(0,196,255,0.45);
         }
+
+        /* Base Styles & Layout */
         *{box-sizing:border-box;margin:0;padding:0}
         html,body{height:100%}
         body{
@@ -67,6 +69,8 @@
         .web-card img{width:40px;height:40px;border-radius:10px;box-shadow:0 0 12px rgba(0,196,255,0.3)}
         .title{font-weight:700;color:var(--text)}
         .desc{color:var(--muted);font-size:0.85rem}
+        
+        /* FORM & COMMENT STYLES */
         .comment-area{width:100%; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;}
         .comment-area p{color:var(--muted); font-size: 0.85rem; margin-bottom: 10px;}
         .comment-input-group{display: flex; gap: 8px; margin-bottom: 15px;}
@@ -90,12 +94,13 @@
         .comment-meta strong{color:var(--accent); font-weight: 700;}
         .comment-text{color:var(--text); flex-grow: 1;}
         .comment-time{color:var(--muted);display:block;text-align:right; font-size: 0.75rem;}
+
+        /* TOAST */
         .toast{position:fixed;right:20px;bottom:24px;padding:12px 16px;border-radius:10px;background:var(--toast-bg);color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;font-weight:700;z-index: 10000;}
         .toast.show{display:flex;animation:fade .3s ease both}
         @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        footer{margin-top:26px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:40px}
-        @media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}.web-card{flex:0 0 100%}}
-        /* Chatbot CSS giữ nguyên như phản hồi trước */
+
+        /* Chatbot CSS */
         #cypher-toggle { position: fixed; bottom: 24px; right: 24px; width:56px; height:56px; border-radius:50%; background: linear-gradient(135deg,#00c6ff,#0072ff); color:#fff; border:none; z-index:10050; cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center; font-size:22px; transition: transform 0.3s ease; }
         #cypher-toggle:hover { transform: scale(1.05); }
         #cypher-panel { position: fixed; bottom: 96px; right: 24px; width:360px; max-height:520px; background:#0b1220; border-radius:14px; box-shadow:0 12px 40px rgba(0,0,0,0.6); display:none; flex-direction:column; overflow:hidden; z-index:10040; border:1px solid rgba(0,198,255,0.12); }
@@ -109,6 +114,10 @@
         #cypher-input button { padding:10px 14px; border-radius:8px; border:none; background:#00c6ff; color:#012; cursor:pointer; font-weight:700; transition: background-color 0.2s; }
         #cypher-input button:hover { background: #4ccfff; }
         .clearfix::after { content:""; display:block; clear:both; }
+
+        /* Footer & Media Queries */
+        footer{margin-top:26px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:40px}
+        @media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}.web-card{flex:0 0 100%}}
     </style>
 </head>
 <body>
@@ -117,6 +126,7 @@
     <div class="dark-overlay"></div>
 
     <div class="wrap">
+
         <header>
             <div class="avatar" style="background-image:url('https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-1/571658413_122191948142569142_1978419823035286129_n.jpg?stp=cp6_dst-jpg_s160x160_tt6&_nc_cat=106&ccb=1-7&_nc_sid=e99d92&_nc_ohc=ANoqFd1Bzr8Q7kNvwGebFtl&_nc_oc=AdnVPq-fARWXz0MW5plWyujBiywRAENDFvZbsvw4qqrD_v1Kzv679LNzIIqRWdfHab0&_nc_zt=24&_nc_ht=scontent.fhan18-1.fna&_nc_gid=EvlJLEkJS4ie69Ah9a7Tnw&oh=00_Afdw1B88bZmt-Oosuu8MQ2XuOKP1_9taRWLKBzDp4x2R_A&oe=69093542');"></div>
             <div class="meta">
@@ -230,7 +240,7 @@
             getFirestore, collection, addDoc, getDocs, query, orderBy, where, serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // === 1. Cấu hình Firebase ===
+        // === 1. Cấu hình Firebase (Thay thế bằng cấu hình của bạn) ===
         const firebaseConfig = {
             apiKey: "AIzaSyCb3sLxKk8_l6UT3hfcy_JXOs33bQrWb60",
             authDomain: "cypherdev-21611.firebaseapp.com",
@@ -254,10 +264,10 @@
         const commentInput = document.getElementById("commentInput");
         const sendCommentBtn = document.getElementById("sendComment");
         const commentList = document.getElementById("commentList");
-        const toastElement = document.getElementById("toast"); // Lấy toast element
+        const toastElement = document.getElementById("toast"); 
 
         let currentUser = null;
-        let hasCommented = false; // Biến cờ kiểm tra đã bình luận
+        let hasCommented = false; 
 
         // === 9. Toast helper ===
         function showToast(msg) {
@@ -281,7 +291,7 @@
         
         // === 8. Tải bình luận (Đã FIX lỗi lặp) ===
         async function loadComments() {
-            commentList.innerHTML = ""; 
+            commentList.innerHTML = ""; // DÒNG QUAN TRỌNG FIX LỖI LẶP
             try {
                 const q = query(commentsRef, orderBy("timestamp", "desc"));
                 const snapshot = await getDocs(q);
@@ -420,14 +430,14 @@
         <div id="cypher-header">🤖 Cypher AI — Hỗ trợ</div>
         <div id="cypher-messages" class="clearfix" aria-live="polite"></div>
         <div id="cypher-input">
-            <input id="cypher-text" placeholder="Viết gì đó... (Tiếng Việt ổn nếu model hỗ trợ)" />
+            <input id="cypher-text" placeholder="Viết gì đó..." />
             <button id="cypher-send">Gửi</button>
         </div>
     </div>
 
     <script>
     (function(){
-        // ** FIX LỖI 404: Cập nhật đường dẫn proxy khớp với /public/ **
+        // ** FIX LỖI 404: ĐƯỜNG DẪN PROXY ĐƯỢC SỬA LẠI THEO VỊ TRÍ THỰC TẾ (/public/proxy.php) **
         const PROXY_URL = "https://cypher234.shop/public/proxy.php"; 
 
         const toggle = document.getElementById("cypher-toggle");
@@ -435,8 +445,12 @@
         const msgBox = document.getElementById("cypher-messages");
         const input = document.getElementById("cypher-text");
         const sendBtn = document.getElementById("cypher-send");
-
-        // ... (Các hàm khác giữ nguyên) ...
+        
+        // FIX LỖI "TypeError: Cannot set properties of null (setting 'onclick')"
+        if (!toggle || !panel || !msgBox || !input || !sendBtn) {
+            console.error("Lỗi khởi tạo Chatbot: Một số phần tử HTML không được tìm thấy.");
+            return; 
+        }
 
         // Toggle open/close
         toggle.addEventListener("click", () => {
@@ -544,5 +558,5 @@
 
     })();
     </script>
-    </body>
+</body>
 </html>

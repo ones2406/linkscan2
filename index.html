@@ -240,7 +240,7 @@
             getFirestore, collection, addDoc, getDocs, query, orderBy, where, serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // === 1. Cấu hình Firebase (Thay thế bằng cấu hình của bạn) ===
+        // === 1. Cấu hình Firebase ===
         const firebaseConfig = {
             apiKey: "AIzaSyCb3sLxKk8_l6UT3hfcy_JXOs33bQrWb60",
             authDomain: "cypherdev-21611.firebaseapp.com",
@@ -268,6 +268,7 @@
 
         let currentUser = null;
         let hasCommented = false; 
+        let isLoadingComments = false; // ✅ BIẾN CỜ MỚI ĐỂ CHẶN TẢI TRÙNG LẶP
 
         // === 9. Toast helper ===
         function showToast(msg) {
@@ -289,12 +290,24 @@
             }
         }
         
-        // === 8. Tải bình luận (Đã FIX lỗi lặp) ===
+        // === 8. Tải bình luận (Đã FIX lỗi lặp bằng cờ) ===
         async function loadComments() {
-            commentList.innerHTML = ""; // DÒNG QUAN TRỌNG FIX LỖI LẶP
+            // 🛑 CHẶN NẾU ĐANG TẢI
+            if (isLoadingComments) {
+                console.log("Đang tải bình luận, bỏ qua lệnh tải trùng lặp.");
+                return;
+            }
+            isLoadingComments = true; // Bật cờ
+            
+            // ✅ XÓA NỘI DUNG CŨ NGAY LẬP TỨC
+            commentList.innerHTML = "<li style='color:var(--muted); text-align:center;'>Đang tải bình luận...</li>"; 
+            
             try {
                 const q = query(commentsRef, orderBy("timestamp", "desc"));
                 const snapshot = await getDocs(q);
+                
+                // Xóa placeholder "Đang tải..."
+                commentList.innerHTML = "";
                 
                 if (snapshot.empty) {
                      commentList.innerHTML = "<li style='color:var(--muted); text-align:center;'>Chưa có bình luận nào.</li>";
@@ -326,6 +339,8 @@
             } catch (e) {
                 console.error("Lỗi khi tải bình luận:", e);
                 commentList.innerHTML = "<li style='color:red;'>Không thể tải bình luận.</li>";
+            } finally {
+                isLoadingComments = false; // Tắt cờ sau khi hoàn thành (thành công hoặc thất bại)
             }
         }
 
@@ -348,7 +363,8 @@
                         commentInput.placeholder = "Nhập bình luận...";
                     }
                 });
-                loadComments();
+                // Chỉ gọi loadComments một lần
+                loadComments(); 
             } else {
                 currentUser = null;
                 hasCommented = false; 
@@ -357,6 +373,7 @@
                 sendCommentBtn.disabled = true;
                 commentInput.disabled = true;
                 commentInput.placeholder = "Vui lòng đăng nhập để bình luận.";
+                // Chỉ gọi loadComments một lần
                 loadComments();
             }
         });
@@ -412,6 +429,7 @@
                 commentInput.placeholder = "Bạn đã bình luận một lần.";
                 showToast("✅ Bình luận đã được gửi!");
                 
+                // Tải lại bình luận sau khi gửi
                 loadComments(); 
             } catch (e) {
                 console.error("Lỗi gửi bình luận:", e);
@@ -421,6 +439,7 @@
             }
         });
         
+        // Tải bình luận lần đầu (chắc chắn chạy)
         loadComments(); 
     </script>
     

@@ -411,179 +411,135 @@ sendCommentBtn.addEventListener("click", async () => {
   }
 </script>
 
-<!-- 💬 Cypher AI Chat -->
+<!-- ===== Cypher AI Chatbot (clean, single instance) ===== -->
 <style>
-  #cypher-chatbot {
-    position: fixed;
-    bottom: 80px;
-    right: 25px;
-    width: 320px;
-    max-height: 450px;
-    background: #0d1117;
-    border: 1px solid #00c3ff55;
-    border-radius: 20px;
-    box-shadow: 0 0 25px #00c3ff30;
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 9999;
-    animation: fadeIn 0.3s ease;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  #cypher-header {
-    background: linear-gradient(90deg, #00c3ff, #0066ff);
-    color: white;
-    text-align: center;
-    padding: 10px;
-    font-weight: bold;
-    font-size: 15px;
-  }
-
-  #cypher-chatbox {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    font-size: 14px;
-    color: #fff;
-  }
-
-  .cypher-msg {
-    background: #1a1f29;
-    padding: 8px 10px;
-    margin: 5px 0;
-    border-radius: 10px;
-    word-wrap: break-word;
-  }
-
-  .cypher-user {
-    background: #007bff55;
-    align-self: flex-end;
-    text-align: right;
-  }
-
-  #cypher-input {
-    display: flex;
-    border-top: 1px solid #00c3ff33;
-  }
-
-  #cypher-userInput {
-    flex: 1;
-    border: none;
-    outline: none;
-    padding: 8px 10px;
-    background: transparent;
-    color: white;
-  }
-
-  #cypher-sendBtn {
-    border: none;
-    background: #00c3ff;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 0 10px 10px 0;
-    transition: 0.2s;
-  }
-
-  #cypher-sendBtn:hover {
-    background: #0092cc;
-  }
-
+  /* Chat toggle & box */
   #cypher-toggle {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #00c3ff, #0066ff);
-    box-shadow: 0 0 20px #00c3ff80;
-    border: none;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 10000;
-    transition: 0.3s;
+    position: fixed; bottom: 24px; right: 24px;
+    width:56px; height:56px; border-radius:50%;
+    background: linear-gradient(135deg,#00c6ff,#0072ff);
+    color:#fff; border:none; z-index:10050; cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.35);
+    display:flex; align-items:center; justify-content:center; font-size:22px;
   }
-
-  #cypher-toggle:hover {
-    transform: scale(1.1);
+  #cypher-panel {
+    position: fixed; bottom: 96px; right: 24px; width:360px; max-height:520px;
+    background:#0b1220; border-radius:14px; box-shadow:0 12px 40px rgba(0,0,0,0.6);
+    display:none; flex-direction:column; overflow:hidden; z-index:10040;
+    border:1px solid rgba(0,198,255,0.12);
   }
+  #cypher-header { padding:12px 14px; font-weight:700; color:#fff; background:linear-gradient(90deg,#00c6ff22,#0072ff22); }
+  #cypher-messages { flex:1; padding:12px; overflow-y:auto; font-size:14px; color:#e6eef8; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); }
+  .cy-msg { display:inline-block; padding:8px 12px; border-radius:12px; margin:6px 0; max-width:80%; word-wrap:break-word; }
+  .cy-user { background:linear-gradient(90deg,#0072ff,#00c6ff); color:#001827; align-self:flex-end; float:right; border-bottom-right-radius:4px; }
+  .cy-bot { background:#0f1720; color:#e6eef8; align-self:flex-start; float:left; }
+  #cypher-input { display:flex; gap:8px; padding:10px; border-top:1px solid rgba(255,255,255,0.02); background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent); }
+  #cypher-input input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:#07101a; color:#fff; outline:none; }
+  #cypher-input button { padding:10px 14px; border-radius:8px; border:none; background:#00c6ff; color:#012; cursor:pointer; font-weight:700; }
+  /* clear floats */
+  .clearfix::after { content:""; display:block; clear:both; }
 </style>
 
-<div id="cypher-chatbot">
-  <div id="cypher-header">🤖 Cypher AI</div>
-  <div id="cypher-chatbox"></div>
+<button id="cypher-toggle" aria-label="Open chat">💬</button>
+
+<div id="cypher-panel" role="dialog" aria-label="Cypher AI Chat">
+  <div id="cypher-header">🤖 Cypher AI — Hỗ trợ</div>
+  <div id="cypher-messages" class="clearfix" aria-live="polite"></div>
   <div id="cypher-input">
-    <input id="cypher-userInput" placeholder="Nhập tin nhắn..." />
-    <button id="cypher-sendBtn">Gửi</button>
+    <input id="cypher-text" placeholder="Viết gì đó... (Tiếng Việt ổn nếu model hỗ trợ)" />
+    <button id="cypher-send">Gửi</button>
   </div>
 </div>
 
-<button id="cypher-toggle">💬</button>
-
 <script>
-  const chatBox = document.getElementById("cypher-chatbox");
-  const userInput = document.getElementById("cypher-userInput");
-  const sendBtn = document.getElementById("cypher-sendBtn");
+(function(){
+  // CHỈ CHỈNH ĐƯỜNG DẪN PROXY NÀY nếu host của bạn khác
+  const PROXY_URL = "https://cypher289.shop/proxy.php";
+
   const toggle = document.getElementById("cypher-toggle");
-  const chatbot = document.getElementById("cypher-chatbot");
+  const panel = document.getElementById("cypher-panel");
+  const msgBox = document.getElementById("cypher-messages");
+  const input = document.getElementById("cypher-text");
+  const sendBtn = document.getElementById("cypher-send");
 
-  toggle.onclick = () => {
-    chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
-  };
-
-  sendBtn.onclick = sendMessage;
-  userInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") sendMessage();
+  // Toggle open/close
+  toggle.addEventListener("click", () => {
+    panel.style.display = panel.style.display === "flex" ? "none" : "flex";
+    if (panel.style.display === "flex") input.focus();
   });
 
-  async function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
+  // Send on click or Enter
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
 
-    appendMsg(text, "cypher-user");
-    userInput.value = "";
-    appendMsg("⏳ Đang phản hồi...", "cypher-msg");
+  // Utility: append message
+  function append(text, cls) {
+    const d = document.createElement("div");
+    d.className = "cy-msg " + (cls || "cy-bot");
+    d.innerText = text;
+    msgBox.appendChild(d);
+    msgBox.scrollTop = msgBox.scrollHeight;
+  }
+
+  // Send message handler
+  let isWaiting = false;
+  async function sendMessage() {
+    if (isWaiting) return; // tránh gửi nhiều lần
+    const t = input.value.trim();
+    if (!t) return;
+    append(t, "cy-user");
+    input.value = "";
+    append("⏳ Đang xử lý...", "cy-bot");
+    isWaiting = true;
 
     try {
-      const res = await fetch("https://cypher234.shop/proxy.php", {
+      const res = await fetch(PROXY_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ inputs: text })
+        body: JSON.stringify({ inputs: t })
       });
 
-      const data = await res.json();
-      const reply = Array.isArray(data) && data[0]?.generated_text
-        ? data[0].generated_text
-        : "Xin lỗi, mình không hiểu ý bạn 😢";
+      // Nếu server trả về text not JSON -> throw
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch(e) { 
+        // nếu là plain text trả về từ HF (ví dụ model trả JSON array string) -> cố gắng parse fallback
+        try { data = JSON.parse(text.replace(/\n/g,'')); } catch(e2) { data = text; }
+      }
 
-      document.querySelectorAll(".cypher-msg").forEach(m => {
-        if (m.innerText === "⏳ Đang phản hồi...") m.remove();
-      });
-      appendMsg(reply, "cypher-msg");
+      // xóa dòng 'đang xử lý...'
+      const statusNodes = Array.from(msgBox.querySelectorAll(".cy-bot")).filter(n => n.innerText.includes("Đang xử lý"));
+      statusNodes.forEach(n => n.remove());
+
+      // xử lý data có cấu trúc mảng từ HF
+      let reply = "Xin lỗi, không có phản hồi.";
+      if (Array.isArray(data) && data[0] && (data[0].generated_text || data[0].generated_text === "")) {
+        reply = data[0].generated_text || " ";
+      } else if (data && typeof data === "object" && data.error) {
+        reply = "Lỗi: " + data.error;
+      } else if (typeof data === "string") {
+        // nếu proxy trả plain text JSON hoặc plain text
+        reply = data;
+      }
+
+      append(reply, "cy-bot");
     } catch (err) {
-      document.querySelectorAll(".cypher-msg").forEach(m => {
-        if (m.innerText === "⏳ Đang phản hồi...") m.remove();
-      });
-      appendMsg("⚠️ Lỗi kết nối máy chủ!", "cypher-msg");
-      console.error(err);
+      // xóa 'đang xử lý...' và báo lỗi
+      const statusNodes = Array.from(msgBox.querySelectorAll(".cy-bot")).filter(n => n.innerText.includes("Đang xử lý"));
+      statusNodes.forEach(n => n.remove());
+      append("⚠️ Lỗi kết nối server. Mở console Network để xem chi tiết.", "cy-bot");
+      console.error("Chat proxy error:", err);
+    } finally {
+      isWaiting = false;
     }
   }
 
-  function appendMsg(msg, cls) {
-    const div = document.createElement("div");
-    div.className = "cypher-msg " + cls;
-    div.innerText = msg;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
+  // Accessibility: close panel on Escape
+  document.addEventListener("keydown", e => { if (e.key === "Escape") panel.style.display = "none"; });
+
+})();
 </script>
+<!-- ===== End Cypher AI Chatbot ===== -->
+
 
 
 <script>

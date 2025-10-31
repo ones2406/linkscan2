@@ -384,6 +384,55 @@ sendCommentBtn.addEventListener("click", async () => {
     window._tt = setTimeout(() => t.classList.remove("show"), 2200);
   }
 </script>
+  <!-- Chatbot AI Cypher -->
+<div id="chatbox" style="position: fixed; bottom: 20px; right: 20px; width: 320px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: none;">
+  <div id="messages" style="max-height: 300px; overflow-y: auto; margin-bottom: 10px;"></div>
+  <input id="userInput" type="text" placeholder="Nhập tin nhắn..." style="width: 80%; padding: 5px;">
+  <button id="sendBtn" style="width: 18%; padding: 5px;">Gửi</button>
+</div>
 
+<button id="toggleChat" style="position: fixed; bottom: 20px; right: 20px; background: #007bff; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 22px; cursor: pointer;">💬</button>
+
+<script>
+  const proxyURL = "https://cypher289.shop/proxy.php";
+
+  document.getElementById("toggleChat").addEventListener("click", () => {
+    const box = document.getElementById("chatbox");
+    box.style.display = box.style.display === "none" ? "block" : "none";
+  });
+
+  document.getElementById("sendBtn").addEventListener("click", sendMessage);
+  document.getElementById("userInput").addEventListener("keypress", e => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const message = input.value.trim();
+    if (!message) return;
+
+    const messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML += `<div style="text-align:right;color:#007bff;"><b>Bạn:</b> ${message}</div>`;
+    input.value = "";
+
+    try {
+      const res = await fetch(proxyURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inputs: message })
+      });
+      const data = await res.json();
+      const reply = data[0]?.generated_text || "AI không phản hồi.";
+      messagesDiv.innerHTML += `<div style="text-align:left;color:#333;"><b>CypherBot:</b> ${reply}</div>`;
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    } catch (err) {
+      messagesDiv.innerHTML += `<div style="color:red;">Lỗi: ${err.message}</div>`;
+    }
+  }
+</script>
+<!-- End Chatbot AI Cypher -->
+
+
+  
 </body>
 </html>

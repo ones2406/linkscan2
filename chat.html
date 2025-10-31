@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot AI miễn phí</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #111; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    #chat-box { width: 100%; max-width: 600px; height: 400px; overflow-y: auto; background: #222; padding: 10px; border-radius: 10px; }
+    .msg { margin: 8px 0; }
+    .user { color: #4caf50; }
+    .bot { color: #03a9f4; }
+    input { width: 100%; max-width: 600px; padding: 10px; border: none; border-radius: 5px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>🤖 Chatbot AI miễn phí (Hugging Face)</h2>
+  <div id="chat-box"></div>
+  <input type="text" id="user-input" placeholder="Nhập tin nhắn..." />
+
+  <script>
+    const API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill";
+    const HF_TOKEN = "Bearer hf_xxxxxxxxxxxxxxxxxxxxxxxxx"; // ⚠️ Dán token Hugging Face của bạn vào đây
+
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+
+    async function sendMessage(msg) {
+      const userMsg = document.createElement("div");
+      userMsg.classList.add("msg", "user");
+      userMsg.textContent = "Bạn: " + msg;
+      chatBox.appendChild(userMsg);
+
+      const botMsg = document.createElement("div");
+      botMsg.classList.add("msg", "bot");
+      botMsg.textContent = "Đang trả lời...";
+      chatBox.appendChild(botMsg);
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Authorization": HF_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ inputs: msg }),
+      });
+
+      const data = await response.json();
+      botMsg.textContent = "Bot: " + (data.generated_text || "Xin lỗi, tôi không hiểu.");
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    userInput.addEventListener("keypress", e => {
+      if (e.key === "Enter" && userInput.value.trim()) {
+        sendMessage(userInput.value);
+        userInput.value = "";
+      }
+    });
+  </script>
+</body>
+</html>

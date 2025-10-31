@@ -8,28 +8,103 @@
   <link rel="shortcut icon" href="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=pd93vMoULecQ7kNvwFdY8hT&_nc_oc=AdlmlfmUx7ViYSuDyxfqFGQUUUyJovbCmUNXXF2LR0QjQhUKTA2PxEmvE5uQrrytJtw&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=XvYrDtqwNKIW7GSz0d8aCQ&oh=00_AffwcSnQZPTnX1284lJjcB2vJ6xZVeQhUXfZrBOpZ4pxXw&oe=6906B1FF">
 
   <style>
-    /* ========== THEME / LAYOUT (kept original) ========== */
-    :root{--glass-bg:rgba(255,255,255,0.04);--card-bg:rgba(8,10,14,0.75);--accent:#00c4ff;--accent-2:#7c4dff;--text:#e9f1fb;--muted:#bfcbd8;--success:#4be27a;--toast-bg:rgba(0,0,0,0.75);--neon-strong:rgba(0,196,255,0.45);}
-    *{box-sizing:border-box;margin:0;padding:0}html,body{height:100%}body{font-family:'Poppins',sans-serif;background: linear-gradient(270deg,#0f0c1a,#081024);color:var(--text);-webkit-font-smoothing:antialiased;overflow-y:auto;}
-    .rgb-layer{position:fixed;inset:0;z-index:0;background: linear-gradient(270deg,rgba(124,77,255,0.4),rgba(0,196,255,0.4),rgba(0,255,170,0.35),rgba(255,85,150,0.35));background-size:900% 900%;filter:blur(28px) saturate(180%);pointer-events:none;animation: rgbFlow 9s linear infinite;mix-blend-mode:screen;opacity:1;}
-    @keyframes rgbFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}.dark-overlay{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(2,6,12,0.8));pointer-events:none;}
+    /* CSS Variables */
+    :root{
+      --glass-bg: rgba(255,255,255,0.04);
+      --card-bg: rgba(8,10,14,0.75);
+      --accent: #00c4ff;
+      --accent-2: #7c4dff;
+      --text: #e9f1fb;
+      --muted: #bfcbd8;
+      --success: #4be27a;
+      --toast-bg: rgba(0,0,0,0.75);
+      --neon-strong: rgba(0,196,255,0.45);
+    }
+
+    /* Base Styles */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(270deg,#0f0c1a,#081024);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      overflow-y:auto;
+    }
+
+    /* RGB Background & Overlay */
+    .rgb-layer{
+      position:fixed;inset:0;z-index:0;
+      background: linear-gradient(270deg,
+        rgba(124,77,255,0.4),
+        rgba(0,196,255,0.4),
+        rgba(0,255,170,0.35),
+        rgba(255,85,150,0.35));
+      background-size:900% 900%;
+      filter:blur(28px) saturate(180%);
+      pointer-events:none;
+      animation: rgbFlow 9s linear infinite;
+      mix-blend-mode:screen;
+      opacity:1;
+    }
+    @keyframes rgbFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .dark-overlay{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(2,6,12,0.8));pointer-events:none;}
+
     .wrap{position:relative;z-index:2;max-width:1000px;margin:36px auto;padding:24px}
+
+    /* HEADER */
     header{display:flex;gap:20px;align-items:center;background:rgba(255,255,255,0.03);border-radius:14px;padding:28px;box-shadow:0 8px 36px rgba(2,6,12,0.7);backdrop-filter:blur(10px)}
     .avatar{width:110px;height:110px;border-radius:50%;flex:0 0 110px;background-size:cover;background-position:center;box-shadow:0 0 25px rgba(0,196,255,0.3)}
-    header h1{font-size:1.6rem;color:var(--text);margin-bottom:6px}header p{color:var(--muted);font-size:0.98rem}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:20px}
-    .card{background:var(--card-bg);border-radius:12px;padding:20px;box-shadow:0 6px 30px rgba(2,6,12,0.6)}.card h2{color:var(--accent);margin-bottom:10px}
-    .lead{color:var(--muted);line-height:1.6;margin-bottom:14px}.services{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-    .service-item{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;font-size:0.92rem;color:var(--muted);border:1px solid rgba(255,255,255,0.05);transition:.2s}.service-item:hover{color:var(--text);transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,196,255,0.1);border-color:var(--neon-strong)}
-    .panel{background:rgba(255,255,255,0.03);border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}.panel h3{color:var(--accent)}.qr{width:190px;height:190px;border-radius:12px;border:3px solid rgba(255,255,255,0.05);box-shadow:0 0 40px rgba(0,196,255,0.25)}
-    .bank-info{width:100%;margin-top:8px}.bank-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin:6px 0;background:rgba(255,255,255,0.02);cursor:pointer;transition:.2s}.bank-row:hover{background:rgba(0,196,255,0.08)}.label{color:var(--muted);font-size:0.92rem}.value{color:var(--text);font-weight:700}.hint{font-size:0.82rem;color:var(--muted);margin-top:6px;text-align:center}
-    .links{display:flex;gap:10px;margin-top:12px}.social{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);color:var(--text);text-decoration:none;transition:.2s;font-weight:600}.social:hover{background:rgba(0,196,255,0.1);transform:translateY(-4px)}.donate{margin-top:10px;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041225;font-weight:700;text-decoration:none;text-align:center;transition:.2s}.donate:hover{filter:brightness(1.1);transform:translateY(-2px)}
-    .webs{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}.web-card{flex:0 0 calc(50% - 12px);background:rgba(255,255,255,0.02);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;transition:.2s;border:1px solid rgba(255,255,255,0.05)}.web-card:hover{transform:translateY(-6px);border-color:var(--neon-strong);box-shadow:0 0 20px rgba(0,196,255,0.08)}.web-card img{width:40px;height:40px;border-radius:10px;box-shadow:0 0 12px rgba(0,196,255,0.3)}.title{font-weight:700;color:var(--text)}.desc{color:var(--muted);font-size:0.85rem}
-    .toast{position:fixed;right:20px;bottom:24px;padding:12px 16px;border-radius:10px;background:var(--toast-bg);color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;font-weight:700}.toast.show{display:flex;animation:fade .3s ease both}@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:40px}@media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}.web-card{flex:0 0 100%}}
+    header h1{font-size:1.6rem;color:var(--text);margin-bottom:6px}
+    header p{color:var(--muted);font-size:0.98rem}
 
-    /* ========== CHATBOT (floating, non-intrusive) ========== */
-    /* kept minimal here, extended at bottom script insertion */
+    /* GRID */
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:20px;margin-top:20px}
+    .card{background:var(--card-bg);border-radius:12px;padding:20px;box-shadow:0 6px 30px rgba(2,6,12,0.6)}
+    .card h2{color:var(--accent);margin-bottom:10px}
+    .lead{color:var(--muted);line-height:1.6;margin-bottom:14px}
+    .services{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .service-item{background:rgba(255,255,255,0.03);padding:8px 12px;border-radius:999px;font-size:0.92rem;color:var(--muted);border:1px solid rgba(255,255,255,0.05);transition:.2s}
+    .service-item:hover{color:var(--text);transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,196,255,0.1);border-color:var(--neon-strong)}
+
+    /* QR + PANEL (Banking/Social) */
+    .panel{background:rgba(255,255,255,0.03);border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px}
+    .panel h3{color:var(--accent)}
+    .qr{width:190px;height:190px;border-radius:12px;border:3px solid rgba(255,255,255,0.05);box-shadow:0 0 40px rgba(0,196,255,0.25)}
+    .qr-wrap{position:relative}
+    .qr-wrap::after{content:"";position:absolute;inset:-12px;border-radius:16px;background:conic-gradient(from 0deg,rgba(0,196,255,0.4),rgba(124,77,255,0.35));filter:blur(16px);animation:spin 8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .bank-info{width:100%;margin-top:8px}
+    .bank-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin:6px 0;background:rgba(255,255,255,0.02);cursor:pointer;transition:.2s}
+    .bank-row:hover{background:rgba(0,196,255,0.08)}
+    .label{color:var(--muted);font-size:0.92rem}
+    .value{color:var(--text);font-weight:700}
+    .hint{font-size:0.82rem;color:var(--muted);margin-top:6px;text-align:center}
+
+    /* SOCIALS */
+    .links{display:flex;gap:10px;margin-top:12px}
+    .social{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);color:var(--text);text-decoration:none;transition:.2s;font-weight:600}
+    .social:hover{background:rgba(0,196,255,0.1);transform:translateY(-4px)}
+    .donate{margin-top:10px;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041225;font-weight:700;text-decoration:none;text-align:center;transition:.2s}
+    .donate:hover{filter:brightness(1.1);transform:translateY(-2px)}
+
+    /* WEBSITE cards */
+    .webs{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+    .web-card{flex:0 0 calc(50% - 12px);background:rgba(255,255,255,0.02);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;transition:.2s;border:1px solid rgba(255,255,255,0.05)}
+    .web-card:hover{transform:translateY(-6px);border-color:var(--neon-strong);box-shadow:0 0 20px rgba(0,196,255,0.08)}
+    .web-card img{width:40px;height:40px;border-radius:10px;box-shadow:0 0 12px rgba(0,196,255,0.3)}
+    .title{font-weight:700;color:var(--text)}
+    .desc{color:var(--muted);font-size:0.85rem}
+
+    /* TOAST */
+    .toast{position:fixed;right:20px;bottom:24px;padding:12px 16px;border-radius:10px;background:var(--toast-bg);color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,0.6);display:none;font-weight:700}
+    .toast.show{display:flex;animation:fade .3s ease both}
+    @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Footer & Media Queries */
+    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:0.9rem;padding-bottom:40px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}.panel{order:-1}.web-card{flex:0 0 100%}}
   </style>
 </head>
 <body>
@@ -64,7 +139,7 @@
 
         <h2 style="margin-top:18px">Thanh toán nhanh (VietQR)</h2>
         <div class="panel">
-          <div class="qr-wrap"><img class="qr" src="https://img.vietqr.io/image/970407-19073015796012-compact.png?addInfo=LE%20VAN%20LINH" alt="QR"></div>
+          <div class="qr-wrap"><img class="qr" src="https://img.vietqr.io/image/970407-19073015796012-compact.png?addInfo=LE%20VAN%20LINH"></div>
 
           <div class="bank-info">
             <div class="bank-row" onclick="copyText('Techcombank')"><div class="label">Ngân hàng</div><div class="value">Techcombank</div></div>
@@ -80,33 +155,34 @@
 
           <a class="donate" href="https://vietqr.co/api/generate/tcb/19073015796012/LE%20VAN%20LINH" target="_blank">Donate / Hỗ trợ</a>
         </div>
-
-        <!-- Comment Section (kept) -->
-        <div id="comment-section" style="margin-top:18px;">
-            <h3 style="color:var(--text); margin-bottom: 10px;">Bình luận</h3>
-            <p>Lưu Ý : Mỗi người chỉ được bình luận 1 lần không thể sửa hay xóa.</p>
-            <div style="display:flex; gap:8px; margin-bottom:15px;">
-                <input type="text" id="commentInput" placeholder="Nhập bình luận..." style="flex-grow:1; padding:10px; border-radius:6px; border:1px solid var(--muted); background: rgba(0,0,0,0.5); color: var(--text);">
-                <button id="sendComment" style="padding:10px 15px; background:var(--accent-2); color:var(--text); font-weight:600; border:none; border-radius:6px; cursor:pointer;">Gửi</button>
-            </div>
-            <h4 style="color:var(--muted); margin-bottom:8px;">Danh sách bình luận:</h4>
-            <ul id="commentList" style="list-style-type:none; padding:0;"></ul>
-        </div>
-
       </div>
 
       <aside class="panel">
         <h3>🌐 Trang Web Của Tôi</h3>
         <div class="webs">
-          <a class="web-card" href="https://cypher289.shop" target="_blank">
-            <img src="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=IzFaUQVgL6wQ7kNvwE_oYhk&_nc_oc=AdkQPUJ3VbjgpT1RXpILG-CbmsBvKq69wCYhHsgEJ1PIl5w1pmM1TqtEhHNA5ehxjC4&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=lrNwn1zbnQfwyu--n5n8eQ&oh=00_AfeMlx0mXSJabdsz2RIqpgDDQZYggjf2bo04bZT4rGeBQw&oe=690A35FF" alt="site">
+          <a class="web-card" href="https://cypher234.shop" target="_blank">
+            <img src="https://scontent.fhan18-1.fna.fbcdn.net/v/t39.30808-6/557481975_122187746096569142_6613018808623610406_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=IzFaUQVgL6wQ7kNvwE_oYhk&_nc_oc=AdkQPUJ3VbjgpT1RXpILG-CbmsBvKq69wCYhHsgEJ1PIl5w1pmM1TqtEhHNA5ehxjC4&_nc_zt=23&_nc_ht=scontent.fhan18-1.fna&_nc_gid=lrNwn1zbnQfwyu--n5n8eQ&oh=00_AfeMlx0mXSJabdsz2RIqpgDDQZYggjf2bo04bZT4rGeBQw&oe=690A35FF">
             <div><div class="title">Cypher234.shop</div><div class="desc">Random 9 cá 100% ra 3s</div></div>
           </a>
         </div>
-
+        
         <div style="width:100%; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
             <button id="loginBtn" style="padding: 10px 15px; background: var(--accent); color: #041225; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 15px;">Đăng nhập bằng Google</button>
             <button id="logoutBtn" style="padding: 10px 15px; background: var(--accent-2); color: #fff; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; width: 100%; display: none;">Đăng xuất</button>
+
+       
+            
+            <div id="comment-section">
+                <h3 style="color:var(--text); margin-bottom: 10px;">Bình luận</h3>
+                <P>Lưu Ý : Mỗi người chỉ được bình luận 1 lần không thể sửa hay xóa.</P>
+                <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                    <input type="text" id="commentInput" placeholder="Nhập bình luận..." style="flex-grow: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--muted); background: rgba(0,0,0,0.5); color: var(--text);">
+                    <button id="sendComment" style="padding: 10px 15px; background: var(--accent-2); color: var(--text); font-weight: 600; border: none; border-radius: 6px; cursor: pointer;">Gửi</button>
+                </div>
+
+                <h4 style="color:var(--muted); margin-bottom: 8px;">Danh sách bình luận:</h4>
+                <ul id="commentList" style="list-style-type: none; padding: 0;"></ul>
+            </div>
         </div>
       </aside>
     </div>
@@ -116,288 +192,406 @@
 
   <div id="toast" class="toast"></div>
 
-  <!-- ========== FIREBASE MODULE (kept, minimal changes) ========== -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    // Firebase config (kept - it's public client config)
-    const firebaseConfig = {
-      apiKey: "AIzaSyCb3sLxKk8_l6UT3hfcy_JXOs33bQrWb60",
-      authDomain: "cypherdev-21611.firebaseapp.com",
-      projectId: "cypherdev-21611",
-      storageBucket: "cypherdev-21611.firebasestorage.app",
-      messagingSenderId: "108470103585",
-      appId: "1:108470103585:web:98b72f0513d2af55087d60",
-      measurementId: "G-CD1R2G24E2"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    const db = getFirestore(app);
-    const commentsRef = collection(db, "comments");
-
-    // Expose minimal functions only — actual DOM wiring is below in DOMContentLoaded
-    window.__cypher = { auth, provider, db, commentsRef, signInWithPopup, onAuthStateChanged, signOut, addDoc, getDocs, query, orderBy, where };
-  </script>
-
-  <!-- ========== MAIN CLIENT SCRIPTS (DOMContentLoaded wrapper) ========== -->
   <script>
-  document.addEventListener("DOMContentLoaded", function () {
+    /**
+     * Sao chép văn bản vào clipboard và hiển thị toast.
+     * @param {string} text - Văn bản cần sao chép.
+     */
+    function copyText(text){
+      navigator.clipboard.writeText(text).then(()=>{
+        showToast('✅ Đã sao chép: ' + text);
+      }).catch(err => {
+        console.error('Không thể sao chép văn bản: ', err);
+        showToast('❌ Lỗi sao chép.');
+      });
+    }
 
-    /* ---------- Helper: Toast, copy ---------- */
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
+    /**
+     * Hiển thị thông báo Toast.
+     * @param {string} msg - Nội dung thông báo.
+     */
+    function showToast(msg){
+      const t=document.getElementById('toast');
+      t.textContent=msg;
       t.classList.add('show');
       clearTimeout(window._tt);
-      window._tt = setTimeout(() => t.classList.remove('show'), 2200);
+      window._tt=setTimeout(()=>t.classList.remove('show'),2200);
     }
-    window.copyText = function (text) {
-      navigator.clipboard.writeText(text).then(()=>showToast('✅ Đã sao chép: ' + text)).catch(()=>showToast('❌ Lỗi sao chép.'));
-    };
-
-    /* ---------- Firebase UI wiring ---------- */
-    const { auth, provider, commentsRef, signInWithPopup, onAuthStateChanged, signOut, addDoc, getDocs, query, orderBy, where } = window.__cypher;
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const commentInput = document.getElementById("commentInput");
-    const sendCommentBtn = document.getElementById("sendComment");
-    const commentList = document.getElementById("commentList");
-
-    let currentUser = null;
-
-    loginBtn.addEventListener("click", async () => {
-      try {
-        const result = await signInWithPopup(auth, provider);
-        showToast(`Xin chào, ${result.user.displayName}!`);
-      } catch (e) {
-        console.error(e);
-        showToast("❌ Đăng nhập thất bại.");
-      }
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        showToast("👋 Đã đăng xuất.");
-      } catch (e) {
-        console.error(e);
-        showToast("❌ Lỗi khi đăng xuất.");
-      }
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-      if (user) {
-        loginBtn.style.display = "none";
-        logoutBtn.style.display = "block";
-        sendCommentBtn.disabled = false;
-        commentInput.disabled = false;
-        loadComments();
-      } else {
-        loginBtn.style.display = "block";
-        logoutBtn.style.display = "none";
-        sendCommentBtn.disabled = true;
-        commentInput.disabled = true;
-        loadComments();
-      }
-    });
-
-    // Anti-spam: per-user local cooldown (10s) + server-side enforced once-per-account
-    const COMMENT_COOLDOWN_MS = 10000;
-    function canSendComment() {
-      const last = localStorage.getItem('cypher_last_comment_ts') || 0;
-      return (Date.now() - last) > COMMENT_COOLDOWN_MS;
-    }
-    function markCommentSent() { localStorage.setItem('cypher_last_comment_ts', Date.now()); }
-
-    sendCommentBtn.addEventListener("click", async () => {
-      if (!currentUser) { showToast("⚠️ Vui lòng đăng nhập để bình luận."); return; }
-      const text = commentInput.value.trim();
-      if (!text) { showToast("⚠️ Bình luận không được để trống."); return; }
-      if (!canSendComment()) { showToast("⏳ Đợi 10s trước khi gửi bình luận khác."); return; }
-
-      sendCommentBtn.disabled = true;
-      try {
-        const q = query(commentsRef, where("uid", "==", currentUser.uid));
-        const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
-          showToast("⚠️ Mỗi tài khoản chỉ được bình luận 1 lần.");
-          commentInput.disabled = true;
-          sendCommentBtn.disabled = true;
-          return;
-        }
-
-        await addDoc(commentsRef, {
-          uid: currentUser.uid,
-          username: currentUser.displayName || "Ẩn danh",
-          photoURL: currentUser.photoURL || "",
-          comment: text,
-          timestamp: new Date()
-        });
-
-        markCommentSent();
-        commentInput.value = "";
-        commentInput.disabled = true;
-        showToast("✅ Bình luận đã gửi!");
-        loadComments();
-      } catch (e) {
-        console.error("Lỗi gửi bình luận:", e);
-        showToast("❌ Gửi bình luận thất bại.");
-      } finally {
-        sendCommentBtn.disabled = true;
-      }
-    });
-
-    async function loadComments() {
-      commentList.innerHTML = "";
-      try {
-        const q = query(commentsRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const li = document.createElement("li");
-          li.innerHTML = `
-            <div style="display:flex; align-items:center; gap:8px;">
-              <img src="${data.photoURL||''}" style="width:24px;height:24px;border-radius:50%;">
-              <strong style="color:var(--accent)">${data.username}</strong>
-              <span style="color:var(--text)">${data.comment}</span>
-            </div>
-            <small style="color:var(--muted);display:block;text-align:right;">
-              ${data.timestamp.toDate().toLocaleTimeString("vi-VN")} ${data.timestamp.toDate().toLocaleDateString("vi-VN")}
-            </small>`;
-          li.style.marginBottom = "10px";
-          li.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
-          li.style.paddingBottom = "5px";
-          commentList.appendChild(li);
-        });
-      } catch (e) {
-        console.error(e);
-        commentList.innerHTML = "<li style='color:red;'>Không thể tải bình luận.</li>";
-      }
-    }
-
-    /* ---------- CHATBOT (floating) ---------- */
-    // CHANGE THIS to your proxy location if different:
-    const PROXY_URL = "https://cypher289.shop/public/proxy.php";
-
-    // Elements (create dynamic UI so it doesn't conflict with existing IDs)
-    const toggleBtn = document.createElement("button");
-    toggleBtn.id = "chat-toggle";
-    toggleBtn.innerText = "💬";
-    document.body.appendChild(toggleBtn);
-
-    const chatContainer = document.createElement("div");
-    chatContainer.id = "chat-container";
-    chatContainer.style.display = "none"; // default hidden
-    chatContainer.innerHTML = `
-      <div id="chat-header" style="background:linear-gradient(135deg,#3b82f6,#9333ea);padding:12px;text-align:center;font-weight:700;">🤖 Cypher AI</div>
-      <div id="chatBox" style="flex:1;padding:10px;overflow:auto;display:flex;flex-direction:column;gap:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)"></div>
-      <div id="input-area" style="display:flex;padding:10px;border-top:1px solid rgba(255,255,255,0.03);">
-        <input id="userInput" placeholder="Nhập tin nhắn..." style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:#07101a;color:#fff;outline:none;" />
-        <button id="sendBtn" style="margin-left:8px;padding:10px 14px;border-radius:8px;border:none;background:#2563eb;color:#fff;cursor:pointer;font-weight:700">Gửi</button>
-      </div>
-    `;
-    // style container consistent with existing CSS (minimally)
-    chatContainer.style.position = "fixed";
-    chatContainer.style.bottom = "95px";
-    chatContainer.style.right = "25px";
-    chatContainer.style.width = "360px";
-    chatContainer.style.height = "480px";
-    chatContainer.style.background = "#1e293b";
-    chatContainer.style.borderRadius = "16px";
-    chatContainer.style.boxShadow = "0 0 25px rgba(0,0,0,0.4)";
-    chatContainer.style.zIndex = 9999;
-    chatContainer.style.display = "none";
-    chatContainer.style.flexDirection = "column";
-    chatContainer.style.overflow = "hidden";
-
-    document.body.appendChild(chatContainer);
-
-    const chatBoxEl = chatContainer.querySelector("#chatBox");
-    const userInputEl = chatContainer.querySelector("#userInput");
-    const sendBtnEl = chatContainer.querySelector("#sendBtn");
-
-    // throttling / anti-spam for chat (5s)
-    const CHAT_COOLDOWN_MS = 5000;
-    let lastChatTs = parseInt(localStorage.getItem('cypher_last_chat_ts')||0,10);
-    function canSendChat() { return (Date.now() - lastChatTs) > CHAT_COOLDOWN_MS; }
-    function markChatSent() { lastChatTs = Date.now(); localStorage.setItem('cypher_last_chat_ts', lastChatTs); }
-
-    // Toggle panel
-    toggleBtn.addEventListener('click', () => {
-      chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
-      if (chatContainer.style.display === 'flex') userInputEl.focus();
-    });
-
-    // helper append
-    function appendMsg(text, cls) {
-      const d = document.createElement('div');
-      d.className = cls;
-      d.style.maxWidth = '75%';
-      d.style.padding = '10px 14px';
-      d.style.borderRadius = '10px';
-      d.style.wordWrap = 'break-word';
-      if (cls === 'user-msg') { d.style.alignSelf = 'flex-end'; d.style.background = '#3b82f6'; d.style.color = '#001827'; }
-      else { d.style.alignSelf = 'flex-start'; d.style.background = '#334155'; d.style.color = '#e6eef8'; }
-      d.innerText = text;
-      chatBoxEl.appendChild(d);
-      chatBoxEl.scrollTop = chatBoxEl.scrollHeight;
-    }
-
-    async function sendChat() {
-      const text = userInputEl.value.trim();
-      if (!text) return;
-      if (!canSendChat()) { showToast("⏳ Đợi 5s rồi gửi tiếp."); return; }
-
-      appendMsg(text, 'user-msg');
-      userInputEl.value = '';
-      appendMsg('⏳ Đang xử lý...', 'bot-msg');
-      markChatSent();
-
-      try {
-        const res = await fetch(PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ inputs: text, model: "mistralai/Mistral-7B-Instruct-v0.2" }) // proxy can use model param
-        });
-
-        // read text then parse robustly
-        const textResp = await res.text();
-        let data;
-        try { data = JSON.parse(textResp); } catch(e) { try { data = JSON.parse(textResp.replace(/\n/g,'')); } catch(e2) { data = textResp; } }
-
-        // remove the "dang xu ly" status nodes
-        Array.from(chatBoxEl.querySelectorAll('div')).forEach(n => { if (n.innerText.includes('Đang xử lý')) n.remove(); });
-
-        let reply = 'Xin lỗi, không nhận được phản hồi.';
-        if (Array.isArray(data) && data[0] && (data[0].generated_text !== undefined)) {
-          reply = data[0].generated_text || ' ';
-        } else if (data && typeof data === 'object' && data.error) {
-          reply = 'Lỗi: ' + data.error;
-        } else if (typeof data === 'string') {
-          reply = data;
-        }
-
-        appendMsg(reply, 'bot-msg');
-
-      } catch (err) {
-        Array.from(chatBoxEl.querySelectorAll('div')).forEach(n => { if (n.innerText.includes('Đang xử lý')) n.remove(); });
-        appendMsg('⚠️ Lỗi kết nối server. Mở console Network để debug.', 'bot-msg');
-        console.error('Chat proxy error:', err);
-      }
-    }
-
-    sendBtnEl.addEventListener('click', sendChat);
-    userInputEl.addEventListener('keypress', e => { if (e.key === 'Enter') sendChat(); });
-
-    /* ---------- End Chatbot ---------- */
-
-  }); // end DOMContentLoaded
   </script>
 
+    <!-- ✅ Firebase chuẩn: Dán toàn bộ phần này vào cuối <body> -->
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { 
+    getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { 
+    getFirestore, collection, addDoc, getDocs, query, orderBy, where 
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // === 1. Cấu hình Firebase ===
+  const firebaseConfig = {
+    apiKey: "AIzaSyCb3sLxKk8_l6UT3hfcy_JXOs33bQrWb60",
+    authDomain: "cypherdev-21611.firebaseapp.com",
+    projectId: "cypherdev-21611",
+    storageBucket: "cypherdev-21611.firebasestorage.app",
+    messagingSenderId: "108470103585",
+    appId: "1:108470103585:web:98b72f0513d2af55087d60",
+    measurementId: "G-CD1R2G24E2"
+  };
+
+  // === 2. Khởi tạo Firebase ===
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
+  const commentsRef = collection(db, "comments");
+
+  // === 3. Lấy phần tử HTML ===
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const commentInput = document.getElementById("commentInput");
+  const sendCommentBtn = document.getElementById("sendComment");
+  const commentList = document.getElementById("commentList");
+
+  let currentUser = null;
+
+  // === 4. Đăng nhập Google ===
+  loginBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      showToast(`Xin chào, ${user.displayName}!`);
+    } catch (error) {
+      console.error("Lỗi đăng nhập:", error);
+      showToast("❌ Đăng nhập thất bại.");
+    }
+  });
+
+  // === 5. Đăng xuất ===
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      showToast("👋 Đã đăng xuất thành công.");
+    } catch (error) {
+      console.error("Lỗi đăng xuất:", error);
+      showToast("❌ Lỗi khi đăng xuất.");
+    }
+  });
+
+  // === 6. Theo dõi trạng thái đăng nhập ===
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      currentUser = user;
+      loginBtn.style.display = "none";
+      logoutBtn.style.display = "block";
+      sendCommentBtn.disabled = false;
+      commentInput.disabled = false;
+      loadComments();
+    } else {
+      currentUser = null;
+      loginBtn.style.display = "block";
+      logoutBtn.style.display = "none";
+      sendCommentBtn.disabled = true;
+      commentInput.disabled = true;
+      loadComments();
+    }
+  });
+
+ // === 7. Gửi bình luận (mỗi tài khoản chỉ 1 lần) ===
+sendCommentBtn.addEventListener("click", async () => {
+  if (!currentUser) {
+    showToast("⚠️ Vui lòng đăng nhập để bình luận.");
+    return;
+  }
+
+  const text = commentInput.value.trim();
+  if (!text) {
+    showToast("⚠️ Bình luận không được để trống.");
+    return;
+  }
+
+  sendCommentBtn.disabled = true;
+
+  try {
+    // Kiểm tra xem user đã bình luận chưa
+    const q = query(commentsRef, where("uid", "==", currentUser.uid));
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      showToast("⚠️ Mỗi tài khoản chỉ được bình luận 1 lần.");
+      commentInput.disabled = true;
+      return;
+    }
+
+    await addDoc(commentsRef, {
+      uid: currentUser.uid,
+      username: currentUser.displayName || "Ẩn danh",
+      photoURL: currentUser.photoURL || "",
+      comment: text,
+      timestamp: new Date()
+    });
+
+    commentInput.value = "";
+    commentInput.disabled = true;
+    showToast("✅ Bình luận đã được gửi!");
+    loadComments();
+  } catch (e) {
+    console.error("Lỗi gửi bình luận:", e);
+    showToast("❌ Gửi bình luận thất bại.");
+  } finally {
+    sendCommentBtn.disabled = true;
+  }
+});
+
+
+  // === 8. Tải bình luận ===
+  async function loadComments() {
+    commentList.innerHTML = "";
+    try {
+      const q = query(commentsRef, orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div style="display:flex; align-items:center; gap:8px;">
+            <img src="${data.photoURL}" style="width:24px;height:24px;border-radius:50%;">
+            <strong style="color:var(--accent)">${data.username}</strong> 
+            <span style="color:var(--text)">${data.comment}</span>
+          </div>
+          <small style="color:var(--muted);display:block;text-align:right;">
+            ${data.timestamp.toDate().toLocaleTimeString("vi-VN")} 
+            ${data.timestamp.toDate().toLocaleDateString("vi-VN")}
+          </small>`;
+        li.style.marginBottom = "10px";
+        li.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
+        li.style.paddingBottom = "5px";
+        commentList.appendChild(li);
+      });
+    } catch (e) {
+      console.error("Lỗi khi tải bình luận:", e);
+      commentList.innerHTML = "<li style='color:red;'>Không thể tải bình luận.</li>";
+    }
+  }
+
+  // === 9. Toast helper ===
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(window._tt);
+    window._tt = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+</script>
+  <script>
+  async function sendMessage() {
+    const userInput = document.getElementById("userInput").value;
+    if (!userInput) return;
+
+    const chatBox = document.getElementById("cypher-chatbox");
+    chatBox.innerHTML += `<div class="user-msg">${userInput}</div>`;
+
+    const response = await fetch("https://cypher234.shop/public/proxy.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ inputs: userMessage })
+    });
+
+
+    const result = await response.json();
+    let reply = "Xin lỗi, mình không hiểu.";
+    if (Array.isArray(result) && result[0]?.generated_text) {
+      reply = result[0].generated_text;
+    }
+
+    chatBox.innerHTML += `<div class="bot-msg">${reply}</div>`;
+    document.getElementById("userInput").value = "";
+    chatBox.scrollTop = chatBox.scrollHeight; // Tự động cuộn xuống tin nhắn mới
+  }
+</script>
+
+<!-- ===== Cypher AI Chatbot (clean, single instance) ===== -->
+<style>
+  /* Chat toggle & box */
+  #cypher-toggle {
+    position: fixed; bottom: 24px; right: 24px;
+    width:56px; height:56px; border-radius:50%;
+    background: linear-gradient(135deg,#00c6ff,#0072ff);
+    color:#fff; border:none; z-index:10050; cursor:pointer; box-shadow:0 8px 30px rgba(0,0,0,0.35);
+    display:flex; align-items:center; justify-content:center; font-size:22px;
+  }
+  #cypher-panel {
+    position: fixed; bottom: 96px; right: 24px; width:360px; max-height:520px;
+    background:#0b1220; border-radius:14px; box-shadow:0 12px 40px rgba(0,0,0,0.6);
+    display:none; flex-direction:column; overflow:hidden; z-index:10040;
+    border:1px solid rgba(0,198,255,0.12);
+  }
+  #cypher-header { padding:12px 14px; font-weight:700; color:#fff; background:linear-gradient(90deg,#00c6ff22,#0072ff22); }
+  #cypher-messages { flex:1; padding:12px; overflow-y:auto; font-size:14px; color:#e6eef8; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); }
+  .cy-msg { display:inline-block; padding:8px 12px; border-radius:12px; margin:6px 0; max-width:80%; word-wrap:break-word; }
+  .cy-user { background:linear-gradient(90deg,#0072ff,#00c6ff); color:#001827; align-self:flex-end; float:right; border-bottom-right-radius:4px; }
+  .cy-bot { background:#0f1720; color:#e6eef8; align-self:flex-start; float:left; }
+  #cypher-input { display:flex; gap:8px; padding:10px; border-top:1px solid rgba(255,255,255,0.02); background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent); }
+  #cypher-input input { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:#07101a; color:#fff; outline:none; }
+  #cypher-input button { padding:10px 14px; border-radius:8px; border:none; background:#00c6ff; color:#012; cursor:pointer; font-weight:700; }
+  /* clear floats */
+  .clearfix::after { content:""; display:block; clear:both; }
+</style>
+
+<button id="cypher-toggle" aria-label="Open chat">💬</button>
+
+<div id="cypher-panel" role="dialog" aria-label="Cypher AI Chat">
+  <div id="cypher-header">🤖 Cypher AI — Hỗ trợ</div>
+  <div id="cypher-messages" class="clearfix" aria-live="polite"></div>
+  <div id="cypher-input">
+    <input id="cypher-text" placeholder="Viết gì đó... (Tiếng Việt ổn nếu model hỗ trợ)" />
+    <button id="cypher-send">Gửi</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  // CHỈ CHỈNH ĐƯỜNG DẪN PROXY NÀY nếu host của bạn khác
+  const PROXY_URL = "https://cypher234.shop/proxy.php";
+
+  const toggle = document.getElementById("cypher-toggle");
+  const panel = document.getElementById("cypher-panel");
+  const msgBox = document.getElementById("cypher-messages");
+  const input = document.getElementById("cypher-text");
+  const sendBtn = document.getElementById("cypher-send");
+
+  // Toggle open/close
+  toggle.addEventListener("click", () => {
+    panel.style.display = panel.style.display === "flex" ? "none" : "flex";
+    if (panel.style.display === "flex") input.focus();
+  });
+
+  // Send on click or Enter
+  sendBtn.addEventListener("click", sendMessage);
+  input.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+
+  // Utility: append message
+  function append(text, cls) {
+    const d = document.createElement("div");
+    d.className = "cy-msg " + (cls || "cy-bot");
+    d.innerText = text;
+    msgBox.appendChild(d);
+    msgBox.scrollTop = msgBox.scrollHeight;
+  }
+
+  // Send message handler
+  let isWaiting = false;
+  async function sendMessage() {
+    if (isWaiting) return; // tránh gửi nhiều lần
+    const t = input.value.trim();
+    if (!t) return;
+    append(t, "cy-user");
+    input.value = "";
+    append("⏳ Đang xử lý...", "cy-bot");
+    isWaiting = true;
+
+    try {
+      const res = await fetch(PROXY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inputs: t })
+      });
+
+      // Nếu server trả về text not JSON -> throw
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch(e) { 
+        // nếu là plain text trả về từ HF (ví dụ model trả JSON array string) -> cố gắng parse fallback
+        try { data = JSON.parse(text.replace(/\n/g,'')); } catch(e2) { data = text; }
+      }
+
+      // xóa dòng 'đang xử lý...'
+      const statusNodes = Array.from(msgBox.querySelectorAll(".cy-bot")).filter(n => n.innerText.includes("Đang xử lý"));
+      statusNodes.forEach(n => n.remove());
+
+      // xử lý data có cấu trúc mảng từ HF
+      let reply = "Xin lỗi, không có phản hồi.";
+      if (Array.isArray(data) && data[0] && (data[0].generated_text || data[0].generated_text === "")) {
+        reply = data[0].generated_text || " ";
+      } else if (data && typeof data === "object" && data.error) {
+        reply = "Lỗi: " + data.error;
+      } else if (typeof data === "string") {
+        // nếu proxy trả plain text JSON hoặc plain text
+        reply = data;
+      }
+
+      append(reply, "cy-bot");
+    } catch (err) {
+      // xóa 'đang xử lý...' và báo lỗi
+      const statusNodes = Array.from(msgBox.querySelectorAll(".cy-bot")).filter(n => n.innerText.includes("Đang xử lý"));
+      statusNodes.forEach(n => n.remove());
+      append("⚠️ Lỗi kết nối server. Mở console Network để xem chi tiết.", "cy-bot");
+      console.error("Chat proxy error:", err);
+    } finally {
+      isWaiting = false;
+    }
+  }
+
+  // Accessibility: close panel on Escape
+  document.addEventListener("keydown", e => { if (e.key === "Escape") panel.style.display = "none"; });
+
+})();
+</script>
+<!-- ===== End Cypher AI Chatbot ===== -->
+
+
+
+<script>
+const chatBox = document.getElementById("chat-box");
+const chatToggle = document.getElementById("chat-toggle");
+const sendBtn = document.getElementById("sendBtn");
+const input = document.getElementById("msgInput");
+const messages = document.getElementById("chat-messages");
+
+const proxyURL = "https://cypher234.shop/proxy.php";
+
+chatToggle.onclick = () => {
+  chatBox.style.display = chatBox.style.display === "none" ? "flex" : "none";
+};
+
+sendBtn.onclick = sendMessage;
+input.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+
+async function sendMessage() {
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  appendMessage("user", msg);
+  input.value = "";
+
+  try {
+    const res = await fetch(proxyURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ inputs: msg })
+    });
+    const data = await res.json();
+    const reply = data[0]?.generated_text || "CypherBot đang bận, thử lại nhé!";
+    appendMessage("bot", reply);
+  } catch (err) {
+    appendMessage("bot", "⚠️ Lỗi kết nối máy chủ!");a
+  }
+}
+
+function appendMessage(sender, text) {
+  const div = document.createElement("div");
+  div.className = `msg ${sender}`;
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+<!-- 💬 End Cypher AI Chatbot -->
+
+
+
+
+  
 </body>
 </html>

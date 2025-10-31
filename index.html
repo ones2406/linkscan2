@@ -411,65 +411,180 @@ sendCommentBtn.addEventListener("click", async () => {
   }
 </script>
 
-<!-- 💬 Cypher AI Chatbot -->
+<!-- 💬 Cypher AI Chat -->
 <style>
-  #chat-toggle {
-    position: fixed; bottom: 20px; right: 20px;
-    width: 60px; height: 60px;
-    border-radius: 50%; border: none;
-    background: linear-gradient(135deg, #00c6ff, #0072ff);
-    color: #fff; font-size: 26px; cursor: pointer;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  #cypher-chatbot {
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    width: 320px;
+    max-height: 450px;
+    background: #0d1117;
+    border: 1px solid #00c3ff55;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #00c3ff30;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #cypher-header {
+    background: linear-gradient(90deg, #00c3ff, #0066ff);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 15px;
+  }
+
+  #cypher-chatbox {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .cypher-msg {
+    background: #1a1f29;
+    padding: 8px 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    word-wrap: break-word;
+  }
+
+  .cypher-user {
+    background: #007bff55;
+    align-self: flex-end;
+    text-align: right;
+  }
+
+  #cypher-input {
+    display: flex;
+    border-top: 1px solid #00c3ff33;
+  }
+
+  #cypher-userInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px 10px;
+    background: transparent;
+    color: white;
+  }
+
+  #cypher-sendBtn {
+    border: none;
+    background: #00c3ff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+    transition: 0.2s;
+  }
+
+  #cypher-sendBtn:hover {
+    background: #0092cc;
+  }
+
+  #cypher-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00c3ff, #0066ff);
+    box-shadow: 0 0 20px #00c3ff80;
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 10000;
     transition: 0.3s;
   }
-  #chat-toggle:hover { transform: scale(1.1); }
 
-  #chat-box {
-    position: fixed; bottom: 90px; right: 20px;
-    width: 360px; max-height: 520px;
-    background: #1a1a1a; color: #f1f1f1;
-    border-radius: 15px; display: none;
-    flex-direction: column; overflow: hidden;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
-  }
-
-  #chat-header {
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
-    padding: 10px; text-align: center;
-    font-weight: 600; letter-spacing: 1px;
-  }
-
-  #chat-messages {
-    flex: 1; padding: 10px; overflow-y: auto;
-    display: flex; flex-direction: column; gap: 8px;
-  }
-
-  .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; }
-  .user { background: #0072ff; align-self: flex-end; }
-  .bot { background: #333; align-self: flex-start; }
-
-  #chat-input {
-    display: flex; border-top: 1px solid #333;
-  }
-  #chat-input input {
-    flex: 1; padding: 10px; border: none; outline: none;
-    background: #222; color: #fff;
-  }
-  #chat-input button {
-    background: #0072ff; border: none; color: #fff;
-    padding: 0 15px; cursor: pointer;
+  #cypher-toggle:hover {
+    transform: scale(1.1);
   }
 </style>
 
-<div id="chat-box">
-  <div id="chat-header">🤖 Cypher AI</div>
-  <div id="chat-messages"></div>
-  <div id="chat-input">
-    <input id="msgInput" type="text" placeholder="Nhập tin nhắn..." />
-    <button id="sendBtn">➤</button>
+<div id="cypher-chatbot">
+  <div id="cypher-header">🤖 Cypher AI</div>
+  <div id="cypher-chatbox"></div>
+  <div id="cypher-input">
+    <input id="cypher-userInput" placeholder="Nhập tin nhắn..." />
+    <button id="cypher-sendBtn">Gửi</button>
   </div>
 </div>
-<button id="chat-toggle">💬</button>
+
+<button id="cypher-toggle">💬</button>
+
+<script>
+  const chatBox = document.getElementById("cypher-chatbox");
+  const userInput = document.getElementById("cypher-userInput");
+  const sendBtn = document.getElementById("cypher-sendBtn");
+  const toggle = document.getElementById("cypher-toggle");
+  const chatbot = document.getElementById("cypher-chatbot");
+
+  toggle.onclick = () => {
+    chatbot.style.display = chatbot.style.display === "flex" ? "none" : "flex";
+  };
+
+  sendBtn.onclick = sendMessage;
+  userInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+
+    appendMsg(text, "cypher-user");
+    userInput.value = "";
+    appendMsg("⏳ Đang phản hồi...", "cypher-msg");
+
+    try {
+      const res = await fetch("https://cypher234.shop/proxy.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inputs: text })
+      });
+
+      const data = await res.json();
+      const reply = Array.isArray(data) && data[0]?.generated_text
+        ? data[0].generated_text
+        : "Xin lỗi, mình không hiểu ý bạn 😢";
+
+      document.querySelectorAll(".cypher-msg").forEach(m => {
+        if (m.innerText === "⏳ Đang phản hồi...") m.remove();
+      });
+      appendMsg(reply, "cypher-msg");
+    } catch (err) {
+      document.querySelectorAll(".cypher-msg").forEach(m => {
+        if (m.innerText === "⏳ Đang phản hồi...") m.remove();
+      });
+      appendMsg("⚠️ Lỗi kết nối máy chủ!", "cypher-msg");
+      console.error(err);
+    }
+  }
+
+  function appendMsg(msg, cls) {
+    const div = document.createElement("div");
+    div.className = "cypher-msg " + cls;
+    div.innerText = msg;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
+
 
 <script>
 const chatBox = document.getElementById("chat-box");
